@@ -19,12 +19,11 @@ data class ProtectorUiState(
     val history: List<ProtectRecord> = emptyList()
 )
 
-class ProtectorViewModel(
-    application: Application,
-    private val engine: ProtectEngine = ProtectEngine(),
-    private val payloadProvider: PayloadProvider = PayloadProvider(application),
+class ProtectorViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val engine: ProtectEngine = ProtectEngine()
+    private val payloadProvider: PayloadProvider = PayloadProvider(application)
     private val history: ProtectHistory = ProtectHistory(application)
-) : AndroidViewModel(application) {
 
     private val _state = MutableStateFlow(ProtectorUiState(history = history.load()))
     val state: StateFlow<ProtectorUiState> = _state

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.ngzz.protect.ProtectStageTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-23T03:53:59.290Z" hostname="all-in-one-89-qggbj" time="0.0">
+<testsuite name="com.ngzz.protect.ProtectStageTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-23T04:05:56.824Z" hostname="all-in-one-89-qggbj" time="0.001">
   <properties/>
-  <testcase name="fromTitle" classname="com.ngzz.protect.ProtectStageTest" time="0.0"/>
+  <testcase name="fromTitle" classname="com.ngzz.protect.ProtectStageTest" time="0.001"/>
   <testcase name="stageOrder" classname="com.ngzz.protect.ProtectStageTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
