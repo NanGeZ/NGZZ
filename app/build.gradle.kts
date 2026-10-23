@@ -20,8 +20,27 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("ngzz-signer.jks")
+            storePassword = "ngzz-protect-2026"
+            keyAlias = "ngzz"
+            keyPassword = "ngzz-protect-2026"
+        }
+    }
+
     buildTypes {
         release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            isDebuggable = false
+            signingConfig = signingConfigs.getByName("release")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        debug {
             isMinifyEnabled = false
         }
     }
@@ -44,6 +63,10 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
             excludes += "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
+            excludes += "META-INF/*.kotlin_module"
+        }
+        jniLibs {
+            useLegacyPackaging = true
         }
     }
 }

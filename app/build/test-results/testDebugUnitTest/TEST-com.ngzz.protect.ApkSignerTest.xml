@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.ngzz.protect.ApkSignerTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-23T03:53:58.162Z" hostname="all-in-one-89-qggbj" time="0.934">
+  <properties/>
+  <testcase name="key material factory loads existing keystore" classname="com.ngzz.protect.ApkSignerTest" time="0.522"/>
+  <testcase name="key material factory ensure creates or loads" classname="com.ngzz.protect.ApkSignerTest" time="0.241"/>
+  <testcase name="signer config default values" classname="com.ngzz.protect.ApkSignerTest" time="0.0"/>
+  <testcase name="signer config custom values" classname="com.ngzz.protect.ApkSignerTest" time="0.001"/>
+  <testcase name="key material factory creates valid keystore" classname="com.ngzz.protect.ApkSignerTest" time="0.169"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

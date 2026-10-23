@@ -26,7 +26,7 @@
 19        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 19-->[androidx.core:core:1.13.1] /root/.gradle/caches/8.14.6/transforms/b155659dec3ab4c4664a0105e1c5ffb9/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
 20        android:debuggable="true"
-21        android:extractNativeLibs="false"
+21        android:extractNativeLibs="true"
 22        android:icon="@android:drawable/sym_def_app_icon"
 22-->/workspace/app/src/main/AndroidManifest.xml:6:9-58
 23        android:label="南天门"
