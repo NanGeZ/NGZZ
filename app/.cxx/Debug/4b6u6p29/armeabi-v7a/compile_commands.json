@@ -1,12 +1,17 @@
 [
 {
   "directory": "/workspace/app/.cxx/Debug/4b6u6p29/armeabi-v7a",
-  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi24 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -Dngzz_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security   -fno-limit-debug-info  -fPIC -o CMakeFiles/ngzz.dir/ngzz_engine.cpp.o -c /workspace/app/src/main/cpp/ngzz_engine.cpp",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi24 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DNGZZ_OBFUSCATE_STRINGS=1 -Dngzz_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security   -fno-limit-debug-info  -fPIC -fvisibility=hidden -O2 -fno-strict-aliasing -o CMakeFiles/ngzz.dir/ngzz_engine.cpp.o -c /workspace/app/src/main/cpp/ngzz_engine.cpp",
   "file": "/workspace/app/src/main/cpp/ngzz_engine.cpp"
 },
 {
   "directory": "/workspace/app/.cxx/Debug/4b6u6p29/armeabi-v7a",
-  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi24 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -Dngzzpack_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security   -fno-limit-debug-info  -fPIC -o CMakeFiles/ngzzpack.dir/ngzz_pack.cpp.o -c /workspace/app/src/main/cpp/ngzz_pack.cpp",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi24 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DNGZZ_OBFUSCATE_STRINGS=1 -Dngzz_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security   -fno-limit-debug-info  -fPIC -fvisibility=hidden -O2 -fno-strict-aliasing -o CMakeFiles/ngzz.dir/ngzz_anti_hook.cpp.o -c /workspace/app/src/main/cpp/ngzz_anti_hook.cpp",
+  "file": "/workspace/app/src/main/cpp/ngzz_anti_hook.cpp"
+},
+{
+  "directory": "/workspace/app/.cxx/Debug/4b6u6p29/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi24 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -Dngzzpack_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security   -fno-limit-debug-info  -fPIC -fvisibility=hidden -O2 -o CMakeFiles/ngzzpack.dir/ngzz_pack.cpp.o -c /workspace/app/src/main/cpp/ngzz_pack.cpp",
   "file": "/workspace/app/src/main/cpp/ngzz_pack.cpp"
 }
 ]

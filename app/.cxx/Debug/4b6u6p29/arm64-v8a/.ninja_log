@@ -1,5 +1,10 @@
 # ninja log v5
-1	1610	1792725684648222790	CMakeFiles/ngzz.dir/ngzz_engine.cpp.o	32b042bc68e162dc
-1663	1779	1792725684832222868	/workspace/app/build/intermediates/cxx/Debug/4b6u6p29/obj/arm64-v8a/libngzz.so	d03bdaf60e348c37
 54	1632	1792725826936283406	CMakeFiles/ngzzpack.dir/ngzz_pack.cpp.o	59cf443404fdcdfb
 1632	1763	1792725827072283465	/workspace/app/build/intermediates/cxx/Debug/4b6u6p29/obj/arm64-v8a/libngzzpack.so	6df07154e8c391bc
+1663	1779	1792725684832222868	/workspace/app/build/intermediates/cxx/Debug/4b6u6p29/obj/arm64-v8a/libngzz.so	d03bdaf60e348c37
+1	1610	1792725684648222790	CMakeFiles/ngzz.dir/ngzz_engine.cpp.o	32b042bc68e162dc
+34	1391	1792726931520764045	CMakeFiles/ngzz.dir/ngzz_anti_hook.cpp.o	12e410ec476861cd
+30	1589	1792726931720764133	CMakeFiles/ngzz.dir/ngzz_engine.cpp.o	5284b8c70cfdb90f
+1589	1695	1792726931832764182	/workspace/app/build/intermediates/cxx/Debug/4b6u6p29/obj/arm64-v8a/libngzz.so	b390556510502d75
+36	2615	1792726932748764586	CMakeFiles/ngzzpack.dir/ngzz_pack.cpp.o	1581b05dcca02c8b
+2616	2783	1792726932920764661	/workspace/app/build/intermediates/cxx/Debug/4b6u6p29/obj/arm64-v8a/libngzzpack.so	6df07154e8c391bc

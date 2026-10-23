@@ -16,5 +16,7 @@ class NativePack {
 
     external fun nativeDetect(flags: Int): Int
 
+    external fun nativeDetectEx(flags: Int): Int
+
     external fun nativeGuard(flags: Int)
 }

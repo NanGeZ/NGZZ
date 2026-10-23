@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.ngzz.protect.ProtectionConfigTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-23T03:36:31.776Z" hostname="all-in-one-89-qggbj" time="0.005">
+<testsuite name="com.ngzz.protect.ProtectionConfigTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-23T03:42:18.738Z" hostname="all-in-one-89-qggbj" time="0.005">
   <properties/>
   <testcase name="disabledSwitchClearsBit" classname="com.ngzz.protect.ProtectionConfigTest" time="0.005"/>
   <testcase name="flagsEncodeSwitchBits" classname="com.ngzz.protect.ProtectionConfigTest" time="0.0"/>

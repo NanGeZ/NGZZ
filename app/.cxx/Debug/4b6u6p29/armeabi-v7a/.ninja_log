@@ -1,5 +1,10 @@
 # ninja log v5
-0	1260	1792725947080334590	CMakeFiles/ngzz.dir/ngzz_engine.cpp.o	15e6a58d4f4f35f7
-1301	1477	1792725947324334693	/workspace/app/build/intermediates/cxx/Debug/4b6u6p29/obj/armeabi-v7a/libngzz.so	8af8088c56437703
 1	1764	1792725947576334801	CMakeFiles/ngzzpack.dir/ngzz_pack.cpp.o	2122d405f2b07e80
 1765	1899	1792725947744334873	/workspace/app/build/intermediates/cxx/Debug/4b6u6p29/obj/armeabi-v7a/libngzzpack.so	235eec5f443383c0
+0	1260	1792725947080334590	CMakeFiles/ngzz.dir/ngzz_engine.cpp.o	15e6a58d4f4f35f7
+1301	1477	1792725947324334693	/workspace/app/build/intermediates/cxx/Debug/4b6u6p29/obj/armeabi-v7a/libngzz.so	8af8088c56437703
+49	1599	1792726934772765477	CMakeFiles/ngzz.dir/ngzz_anti_hook.cpp.o	64030dfdd55b54d6
+47	1829	1792726935040765595	CMakeFiles/ngzz.dir/ngzz_engine.cpp.o	14ad19c68014561e
+1829	2000	1792726935216765673	/workspace/app/build/intermediates/cxx/Debug/4b6u6p29/obj/armeabi-v7a/libngzz.so	483e65480c22f375
+50	2711	1792726935928765986	CMakeFiles/ngzzpack.dir/ngzz_pack.cpp.o	e506df8a790f49a5
+2711	2804	1792726936024766028	/workspace/app/build/intermediates/cxx/Debug/4b6u6p29/obj/armeabi-v7a/libngzzpack.so	235eec5f443383c0

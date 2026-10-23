@@ -41,14 +41,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "ngzz::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ngzz-Debug-66ad5afd5aaa0a76b594.json",
+					"jsonFile" : "target-ngzz-Debug-4b71c54614b7d9370dd6.json",
 					"name" : "ngzz",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "ngzzpack::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ngzzpack-Debug-604a7ea144baf41f2e00.json",
+					"jsonFile" : "target-ngzzpack-Debug-d290cb4fa9b6f7fcacff.json",
 					"name" : "ngzzpack",
 					"projectIndex" : 0
 				}

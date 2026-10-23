@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.ngzz.protect.ProtectErrorTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-23T03:36:31.215Z" hostname="all-in-one-89-qggbj" time="0.012">
+<testsuite name="com.ngzz.protect.ProtectErrorTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-23T03:42:18.725Z" hostname="all-in-one-89-qggbj" time="0.01">
   <properties/>
-  <testcase name="errorFromFallbackToInjection" classname="com.ngzz.protect.ProtectErrorTest" time="0.002"/>
+  <testcase name="errorFromFallbackToInjection" classname="com.ngzz.protect.ProtectErrorTest" time="0.001"/>
   <testcase name="errorFromPreservesProtectError" classname="com.ngzz.protect.ProtectErrorTest" time="0.0"/>
-  <testcase name="progressPercentage" classname="com.ngzz.protect.ProtectErrorTest" time="0.002"/>
+  <testcase name="progressPercentage" classname="com.ngzz.protect.ProtectErrorTest" time="0.001"/>
   <testcase name="allStagesHaveTitle" classname="com.ngzz.protect.ProtectErrorTest" time="0.007"/>
   <testcase name="errorFromMapsCommonExceptions" classname="com.ngzz.protect.ProtectErrorTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
