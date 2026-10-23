@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.ngzz.protect.app-mergeDebugResources-40:/values-nl/values-nl.xml",
+            "outputFile": "com.ngzz.protect.app-mergeDebugResources-41:/values-nl/values-nl.xml",
             "map": [
                 {
                     "source": "/root/.gradle/caches/8.14.6/transforms/0e7606902ef3b2c6f0017ef7e13daecc/transformed/foundation-release/res/values-nl/values-nl.xml",

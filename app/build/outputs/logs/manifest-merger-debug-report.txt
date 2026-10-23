@@ -33,6 +33,7 @@ MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.7] /root/.gradle
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.7] /root/.gradle/caches/8.14.6/transforms/c6de0630eeda205d57a62ca8765736ac/transformed/lifecycle-viewmodel-savedstate-2.8.7/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7] /root/.gradle/caches/8.14.6/transforms/6d14ecb47e22783b3f7e82185c1dd1c7/transformed/lifecycle-viewmodel-ktx-2.8.7/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7] /root/.gradle/caches/8.14.6/transforms/549d8d355b6edbd264522e8973ebc83b/transformed/lifecycle-viewmodel-compose-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-icons-extended-android:1.7.5] /root/.gradle/caches/8.14.6/transforms/0e691ac7a4214ad4a013d964b70e1d7f/transformed/material-icons-extended-release/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.material:material-icons-core-android:1.7.5] /root/.gradle/caches/8.14.6/transforms/a41661b27da97659311b34747f51238d/transformed/material-icons-core-release/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.ui:ui-android:1.7.5] /root/.gradle/caches/8.14.6/transforms/f10f6df2e7db2257a135e69071a8a143/transformed/ui-release/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.activity:activity-ktx:1.9.3] /root/.gradle/caches/8.14.6/transforms/41412c9685bf584db51c57d60d72f6fb/transformed/activity-ktx-1.9.3/AndroidManifest.xml:2:1-7:12
@@ -159,6 +160,8 @@ MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7] /root/.gradle/cac
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7] /root/.gradle/caches/8.14.6/transforms/6d14ecb47e22783b3f7e82185c1dd1c7/transformed/lifecycle-viewmodel-ktx-2.8.7/AndroidManifest.xml:5:5-44
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7] /root/.gradle/caches/8.14.6/transforms/549d8d355b6edbd264522e8973ebc83b/transformed/lifecycle-viewmodel-compose-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7] /root/.gradle/caches/8.14.6/transforms/549d8d355b6edbd264522e8973ebc83b/transformed/lifecycle-viewmodel-compose-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.7.5] /root/.gradle/caches/8.14.6/transforms/0e691ac7a4214ad4a013d964b70e1d7f/transformed/material-icons-extended-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.7.5] /root/.gradle/caches/8.14.6/transforms/0e691ac7a4214ad4a013d964b70e1d7f/transformed/material-icons-extended-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material:material-icons-core-android:1.7.5] /root/.gradle/caches/8.14.6/transforms/a41661b27da97659311b34747f51238d/transformed/material-icons-core-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material:material-icons-core-android:1.7.5] /root/.gradle/caches/8.14.6/transforms/a41661b27da97659311b34747f51238d/transformed/material-icons-core-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.ui:ui-android:1.7.5] /root/.gradle/caches/8.14.6/transforms/f10f6df2e7db2257a135e69071a8a143/transformed/ui-release/AndroidManifest.xml:5:5-44

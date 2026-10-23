@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.ngzz.protect.app-mergeDebugResources-40:/values-en-rXC/values-en-rXC.xml",
+            "outputFile": "com.ngzz.protect.app-mergeDebugResources-41:/values-en-rXC/values-en-rXC.xml",
             "map": [
                 {
                     "source": "/root/.gradle/caches/8.14.6/transforms/978b591e20c2d0e6bda3a168d0ba7f7f/transformed/material3-release/res/values-en-rXC/values-en-rXC.xml",
