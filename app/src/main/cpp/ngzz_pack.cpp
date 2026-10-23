@@ -5,6 +5,7 @@
 #include <ctime>
 #include <string>
 #include <vector>
+#include <map>
 #include <algorithm>
 #include <zlib.h>
 #include <android/log.h>
@@ -302,12 +303,55 @@ std::string jstr2std(JNIEnv* env, jstring s) {
     return out;
 }
 
+std::map<std::string, std::vector<uint8_t>> extract_payload(JNIEnv* env, jobject payload) {
+    std::map<std::string, std::vector<uint8_t>> result;
+    if (payload == nullptr) return result;
+
+    jclass map_class = env->FindClass("java/util/Map");
+    if (map_class == nullptr) return result;
+
+    jmethodID entry_set = env->GetMethodID(map_class, "entrySet", "()Ljava/util/Set;");
+    if (entry_set == nullptr) return result;
+
+    jobject entry_set_obj = env->CallObjectMethod(payload, entry_set);
+    if (entry_set_obj == nullptr) return result;
+
+    jclass set_class = env->FindClass("java/util/Set");
+    jmethodID to_array = env->GetMethodID(set_class, "toArray", "()[Ljava/lang/Object;");
+    jobjectArray entries = (jobjectArray)env->CallObjectMethod(entry_set_obj, to_array);
+    if (entries == nullptr) return result;
+
+    jclass entry_class = env->FindClass("java/util/Map$Entry");
+    jmethodID key_method = env->GetMethodID(entry_class, "getKey", "()Ljava/lang/Object;");
+    jmethodID value_method = env->GetMethodID(entry_class, "getValue", "()Ljava/lang/Object;");
+
+    jsize count = env->GetArrayLength(entries);
+    for (jsize i = 0; i < count; i++) {
+        jobject entry = env->GetObjectArrayElement(entries, i);
+        jstring key = (jstring)env->CallObjectMethod(entry, key_method);
+        jbyteArray value = (jbyteArray)env->CallObjectMethod(entry, value_method);
+
+        const char* key_chars = env->GetStringUTFChars(key, nullptr);
+        std::string abi = key_chars ? key_chars : "";
+        if (key_chars) env->ReleaseStringUTFChars(key, key_chars);
+
+        std::vector<uint8_t> blob;
+        if (value != nullptr) {
+            jsize len = env->GetArrayLength(value);
+            blob.resize(static_cast<size_t>(len));
+            env->GetByteArrayRegion(value, 0, len, reinterpret_cast<jbyte*>(blob.data()));
+        }
+        result[abi] = std::move(blob);
+    }
+    return result;
+}
+
 }  // namespace
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_ngzz_protect_NativePack_protect(
     JNIEnv* env, jobject thiz,
-    jstring inputApk, jbyteArray config, jstring outputApk) {
+    jstring inputApk, jbyteArray config, jstring outputApk, jobject payload) {
     (void)thiz;
 
     std::string in = jstr2std(env, inputApk);
@@ -316,6 +360,8 @@ Java_com_ngzz_protect_NativePack_protect(
     jsize cfgLen = env->GetArrayLength(config);
     std::vector<uint8_t> cfg(cfgLen);
     env->GetByteArrayRegion(config, 0, cfgLen, reinterpret_cast<jbyte*>(cfg.data()));
+
+    auto payload_map = extract_payload(env, payload);
 
     FILE* fin = fopen(in.c_str(), "rb");
     if (!fin) return env->NewStringUTF("无法读取输入 APK");
@@ -336,12 +382,22 @@ Java_com_ngzz_protect_NativePack_protect(
         return env->NewStringUTF(("解析 APK 失败: " + err).c_str());
     }
 
-    std::vector<uint8_t> blob{0x7f, 'E', 'L', 'F'};
-    blob.resize(256, 0);
-    inject_lib(ar, "arm64-v8a", blob);
-    inject_lib(ar, "armeabi-v7a", blob);
+    for (const auto& [abi, blob] : payload_map) {
+        if (!blob.empty()) {
+            inject_lib(ar, abi, blob);
+        }
+    }
+
+    if (payload_map.empty()) {
+        std::vector<uint8_t> placeholder{0x7f, 'E', 'L', 'F'};
+        placeholder.resize(256, 0);
+        inject_lib(ar, "arm64-v8a", placeholder);
+        inject_lib(ar, "armeabi-v7a", placeholder);
+    }
+
     align_entries(ar, 4096);
 
+    LOGI("injected libngzz.so; aligned entries");
     std::vector<uint8_t> out_buf = serialize(ar, err);
     if (out_buf.empty()) {
         return env->NewStringUTF(("打包失败: " + err).c_str());

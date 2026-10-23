@@ -1,6 +1,7 @@
 package com.ngzz.protect
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,8 +17,10 @@ data class ProtectorUiState(
 )
 
 class ProtectorViewModel(
-    private val engine: ProtectEngine = ProtectEngine()
-) : ViewModel() {
+    application: Application,
+    private val engine: ProtectEngine = ProtectEngine(),
+    private val payloadProvider: PayloadProvider = PayloadProvider(application)
+) : AndroidViewModel(application) {
 
     private val _state = MutableStateFlow(ProtectorUiState())
     val state: StateFlow<ProtectorUiState> = _state
@@ -34,9 +37,10 @@ class ProtectorViewModel(
         viewModelScope.launch {
             val outcome = withContext(Dispatchers.IO) {
                 runCatching {
-                    engine.protect(apkPath, _state.value.switches) { stage ->
+                    val payload = payloadProvider.extractAll(listOf("arm64-v8a", "armeabi-v7a"))
+                    engine.protect(apkPath, _state.value.switches, { stage ->
                         _state.value = _state.value.copy(stage = stage)
-                    }
+                    }, payload)
                 }
             }
             _state.value = _state.value.copy(

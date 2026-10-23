@@ -40,6 +40,12 @@ android {
             path = file("src/main/cpp/CMakeLists.txt")
         }
     }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
+        }
+    }
 }
 
 dependencies {
@@ -50,4 +56,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
     testImplementation("junit:junit:4.13.2")
+
+    implementation("com.android.tools.build:apksig:8.7.2")
+    implementation("org.bouncycastle:bcpkix-jdk18on:1.78.1")
+    implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
 }

@@ -7,7 +7,12 @@ class NativePack {
         System.loadLibrary("ngzz")
     }
 
-    external fun protect(inputApk: String, config: ByteArray, outputApk: String): String
+    external fun protect(
+        inputApk: String,
+        config: ByteArray,
+        outputApk: String,
+        payload: Map<String, ByteArray>
+    ): String
 
     external fun nativeDetect(flags: Int): Int
 
