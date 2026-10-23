@@ -1,0 +1,5 @@
+/opt/android-sdk/cmake/3.22.1/bin/ninja \
+  -C \
+  /workspace/app/.cxx/Debug/4b6u6p29/armeabi-v7a \
+  ngzz \
+  ngzzpack

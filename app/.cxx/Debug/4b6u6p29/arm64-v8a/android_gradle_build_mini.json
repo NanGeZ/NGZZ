@@ -1,0 +1,33 @@
+{
+  "buildFiles": [
+    "/workspace/app/src/main/cpp/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/opt/android-sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/workspace/app/.cxx/Debug/4b6u6p29/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/opt/android-sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/workspace/app/.cxx/Debug/4b6u6p29/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "ngzzpack::@6890427a1f51a3e7e1df": {
+      "artifactName": "ngzzpack",
+      "abi": "arm64-v8a",
+      "output": "/workspace/app/build/intermediates/cxx/Debug/4b6u6p29/obj/arm64-v8a/libngzzpack.so",
+      "runtimeFiles": []
+    },
+    "ngzz::@6890427a1f51a3e7e1df": {
+      "artifactName": "ngzz",
+      "abi": "arm64-v8a",
+      "output": "/workspace/app/build/intermediates/cxx/Debug/4b6u6p29/obj/arm64-v8a/libngzz.so",
+      "runtimeFiles": []
+    }
+  }
+}

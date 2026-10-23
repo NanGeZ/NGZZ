@@ -1,0 +1,5 @@
+# ninja log v5
+1	1819	1792723244544197274	CMakeFiles/ngzzpack.dir/ngzz_pack.cpp.o	59cf443404fdcdfb
+1893	2040	1792723244772198736	/workspace/app/build/intermediates/cxx/Debug/4b6u6p29/obj/arm64-v8a/libngzzpack.so	6df07154e8c391bc
+46	1013	1792723260328298536	CMakeFiles/ngzz.dir/ngzz_engine.cpp.o	32b042bc68e162dc
+1017	1109	1792723260424299152	/workspace/app/build/intermediates/cxx/Debug/4b6u6p29/obj/arm64-v8a/libngzz.so	d03bdaf60e348c37

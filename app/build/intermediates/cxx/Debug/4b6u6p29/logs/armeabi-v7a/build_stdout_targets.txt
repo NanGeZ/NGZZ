@@ -1,0 +1,2 @@
+ninja: Entering directory `/workspace/app/.cxx/Debug/4b6u6p29/armeabi-v7a'
+ninja: no work to do.

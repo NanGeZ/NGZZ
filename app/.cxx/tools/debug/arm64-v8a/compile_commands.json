@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/workspace/app/.cxx/Debug/4b6u6p29/arm64-v8a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=aarch64-none-linux-android24 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -Dngzz_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -fno-limit-debug-info  -fPIC -o CMakeFiles/ngzz.dir/ngzz_engine.cpp.o -c /workspace/app/src/main/cpp/ngzz_engine.cpp",
+  "file": "/workspace/app/src/main/cpp/ngzz_engine.cpp"
+},
+{
+  "directory": "/workspace/app/.cxx/Debug/4b6u6p29/arm64-v8a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=aarch64-none-linux-android24 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -Dngzzpack_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -fno-limit-debug-info  -fPIC -o CMakeFiles/ngzzpack.dir/ngzz_pack.cpp.o -c /workspace/app/src/main/cpp/ngzz_pack.cpp",
+  "file": "/workspace/app/src/main/cpp/ngzz_pack.cpp"
+}
+]

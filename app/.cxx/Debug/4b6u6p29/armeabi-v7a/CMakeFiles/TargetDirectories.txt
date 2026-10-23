@@ -1,0 +1,4 @@
+/workspace/app/.cxx/Debug/4b6u6p29/armeabi-v7a/CMakeFiles/ngzz.dir
+/workspace/app/.cxx/Debug/4b6u6p29/armeabi-v7a/CMakeFiles/ngzzpack.dir
+/workspace/app/.cxx/Debug/4b6u6p29/armeabi-v7a/CMakeFiles/edit_cache.dir
+/workspace/app/.cxx/Debug/4b6u6p29/armeabi-v7a/CMakeFiles/rebuild_cache.dir
