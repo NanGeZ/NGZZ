@@ -1,11 +1,13 @@
 package com.ngzz.protect
 
 import java.io.File
+import java.io.IOException
+import java.io.InputStream
+import java.math.BigInteger
 import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.PrivateKey
 import java.security.cert.X509Certificate
-import java.math.BigInteger
 import java.util.Date
 
 data class SigningMaterial(
@@ -17,41 +19,77 @@ data class SigningMaterial(
 
 object KeyMaterialFactory {
 
-    fun ensure(config: SignerConfig): SigningMaterial {
-        val ksFile = File(config.keystorePath)
-        if (ksFile.exists()) {
-            return load(config)
-        }
-        return create(config)
-    }
+    private val STORE_TYPES = listOf("JKS", "PKCS12")
 
     fun load(config: SignerConfig): SigningMaterial {
-        val ks = KeyStore.getInstance("JKS")
-        File(config.keystorePath).inputStream().use {
-            ks.load(it, config.password.toCharArray())
+        val file = File(config.keystorePath)
+        if (!file.exists()) {
+            throw ProtectError.KeystoreFailed(
+                IllegalStateException("签名文件不存在: ${file.name}")
+            )
         }
-        val key = ks.getKey(config.alias, config.password.toCharArray()) as PrivateKey
-        val cert = ks.getCertificate(config.alias) as X509Certificate
-        return SigningMaterial(key, cert, config.alias, config.password)
+        return load(file.inputStream(), config)
     }
 
-    fun create(config: SignerConfig): SigningMaterial {
+    fun load(input: InputStream, config: SignerConfig): SigningMaterial {
+        val bytes = input.use { it.readBytes() }
+        var lastError: Exception? = null
+        for (type in STORE_TYPES) {
+            try {
+                return loadFrom(bytes, type, config)
+            } catch (e: Exception) {
+                lastError = e
+            }
+        }
+        throw ProtectError.KeystoreFailed(
+            IllegalStateException(
+                "无法读取签名文件（请检查密码/别名是否正确）: ${lastError?.message}",
+                lastError
+            )
+        )
+    }
+
+    private fun loadFrom(bytes: ByteArray, type: String, config: SignerConfig): SigningMaterial {
+        val ks = KeyStore.getInstance(type)
+        ks.load(bytes.inputStream(), config.storePassword.toCharArray())
+        if (!ks.containsAlias(config.alias)) {
+            throw ProtectError.KeystoreFailed(
+                IllegalStateException("签名文件中不存在别名: ${config.alias}")
+            )
+        }
+        val key = ks.getKey(config.alias, config.keyPassword.toCharArray()) as? PrivateKey
+            ?: throw ProtectError.KeystoreFailed(
+                IllegalStateException("别名 ${config.alias} 不是私钥条目")
+            )
+        val cert = ks.getCertificate(config.alias) as? X509Certificate
+            ?: throw ProtectError.KeystoreFailed(
+                IllegalStateException("别名 ${config.alias} 缺少证书")
+            )
+        return SigningMaterial(key, cert, config.alias, config.keyPassword)
+    }
+
+    fun store(config: SignerConfig, material: SigningMaterial, type: String = "JKS") {
+        val ks = KeyStore.getInstance(type)
+        ks.load(null, config.storePassword.toCharArray())
+        ks.setKeyEntry(
+            config.alias,
+            material.privateKey,
+            config.keyPassword.toCharArray(),
+            arrayOf(material.certificate)
+        )
+        File(config.keystorePath).outputStream().use {
+            ks.store(it, config.storePassword.toCharArray())
+        }
+    }
+
+    fun generate(config: SignerConfig, type: String = "JKS"): SigningMaterial {
         val kpg = KeyPairGenerator.getInstance("RSA")
         kpg.initialize(2048)
         val pair = kpg.generateKeyPair()
         val cert = SelfSignedCert.generate(pair.private, pair.public, config.dn)
-        val ks = KeyStore.getInstance("JKS")
-        ks.load(null, config.password.toCharArray())
-        ks.setKeyEntry(
-            config.alias,
-            pair.private,
-            config.password.toCharArray(),
-            arrayOf(cert)
-        )
-        File(config.keystorePath).outputStream().use {
-            ks.store(it, config.password.toCharArray())
-        }
-        return SigningMaterial(pair.private, cert, config.alias, config.password)
+        val material = SigningMaterial(pair.private, cert, config.alias, config.keyPassword)
+        store(config, material, type)
+        return material
     }
 }
 

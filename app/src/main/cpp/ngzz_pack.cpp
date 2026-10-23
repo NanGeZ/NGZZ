@@ -388,11 +388,18 @@ Java_com_ngzz_protect_NativePack_protect(
         }
     }
 
-    if (payload_map.empty()) {
-        std::vector<uint8_t> placeholder{0x7f, 'E', 'L', 'F'};
-        placeholder.resize(256, 0);
-        inject_lib(ar, "arm64-v8a", placeholder);
-        inject_lib(ar, "armeabi-v7a", placeholder);
+    if (!cfg.empty()) {
+        Entry ce;
+        ce.name = "assets/ngzz/config.bin";
+        ce.header.sig = kCenSig;
+        ce.header.made_by = 0x031e;
+        ce.header.extract = 20;
+        ce.header.method = 0;  // STORED，运行时引擎直接 ZipFile 读取
+        ce.header.crc32 = crc32(0, cfg.data(), cfg.size());
+        ce.header.comp_size = cfg.size();
+        ce.header.uncomp_size = cfg.size();
+        ce.data = cfg;
+        ar.entries.push_back(std::move(ce));
     }
 
     align_entries(ar, 4096);

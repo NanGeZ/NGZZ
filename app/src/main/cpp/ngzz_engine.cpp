@@ -31,6 +31,75 @@ enum {
 
 static std::atomic<bool> g_guard_running{false};
 static std::atomic<int> g_violation_count{0};
+static std::atomic<int64_t> g_expiry_epoch{0};
+
+static uint32_t rd32le(const uint8_t* p) {
+    return (uint32_t)p[0] | ((uint32_t)p[1] << 8) | ((uint32_t)p[2] << 16) | ((uint32_t)p[3] << 24);
+}
+static uint16_t rd16le(const uint8_t* p) {
+    return (uint16_t)(p[0] | (p[1] << 8));
+}
+
+static void load_config_from_apk(const std::string& apk_path) {
+    FILE* f = fopen(apk_path.c_str(), "rb");
+    if (!f) return;
+    fseek(f, 0, SEEK_END);
+    long fsize = ftell(f);
+    if (fsize < 22) { fclose(f); return; }
+
+    const long tail = fsize < 66000 ? fsize : 66000;
+    std::vector<uint8_t> buf(static_cast<size_t>(tail));
+    fseek(f, fsize - tail, SEEK_SET);
+    if (fread(buf.data(), 1, buf.size(), f) != buf.size()) { fclose(f); return; }
+    fclose(f);
+
+    size_t eocd = 0;
+    bool found = false;
+    for (size_t i = buf.size() - 22; ; --i) {
+        if (rd32le(&buf[i]) == 0x06054b50) { eocd = i; found = true; break; }
+        if (i == 0) break;
+    }
+    if (!found) return;
+
+    uint32_t cd_count = rd16le(&buf[eocd + 10]) | ((uint32_t)rd16le(&buf[eocd + 12]) << 16);
+    uint32_t cd_off = rd32le(&buf[eocd + 16);
+
+    long base = fsize - tail;
+    size_t pos = (cd_off >= (uint32_t)base) ? (cd_off - base) : 0;
+    const char* target = "assets/ngzz/config.bin";
+    const size_t target_len = 22;
+
+    for (uint32_t n = 0; n < cd_count && pos + 46 <= buf.size(); ++n) {
+        if (rd32le(&buf[pos]) != 0x02014b50) break;
+        uint16_t method = rd16le(&buf[pos + 10]);
+        uint32_t csize = rd32le(&buf[pos + 20]);
+        uint16_t name_len = rd16le(&buf[pos + 28]);
+        uint16_t extra_len = rd16le(&buf[pos + 30]);
+        uint16_t cmt_len = rd16le(&buf[pos + 32]);
+        uint32_t lho = rd32le(&buf[pos + 42]);
+        if (pos + 46 + name_len > buf.size()) break;
+        if (name_len == target_len && memcmp(&buf[pos + 46], target, target_len) == 0) {
+            if (method != 0 || csize < 16) return;
+            if (lho < (uint32_t)base) return;
+            size_t lp = lho - base;
+            if (lp + 30 > buf.size()) return;
+            if (rd32le(&buf[lp]) != 0x04034b50) return;
+            uint16_t ln = rd16le(&buf[lp + 26]);
+            uint16_t le = rd16le(&buf[lp + 28]);
+            size_t data = lp + 30 + ln + le;
+            if (data + 16 > buf.size()) return;
+            if (memcmp(&buf[data], "NZCF", 4) == 0) {
+                int64_t exp = 0;
+                for (int b = 7; b >= 0; --b) {
+                    exp = (exp << 8) | buf[data + 8 + b];
+                }
+                if (exp > 0) g_expiry_epoch.store(exp, std::memory_order_relaxed);
+            }
+            return;
+        }
+        pos += 46 + name_len + extra_len + cmt_len;
+    }
+}
 
 __attribute__((noinline))
 static void fatal_exit() {
@@ -187,6 +256,10 @@ static bool detect_network() {
 __attribute__((noinline))
 static bool detect_expiry() {
     time_t now = time(nullptr);
+    int64_t custom = g_expiry_epoch.load(std::memory_order_relaxed);
+    if (custom > 0) {
+        return now > static_cast<time_t>(custom);
+    }
     struct tm cutoff = {0};
     cutoff.tm_year = 2026 - 1900;
     cutoff.tm_mon = 11;
@@ -230,6 +303,17 @@ extern "C" JNIEXPORT jint JNICALL
 Java_com_ngzz_protect_NativePack_nativeDetect(JNIEnv* env, jobject thiz, jint flags) {
     (void)env; (void)thiz;
     return run_checks(static_cast<uint32_t>(flags)) ? 1 : 0;
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_ngzz_protect_NativePack_nativeLoadConfig(JNIEnv* env, jobject thiz, jstring apkPath) {
+    (void)thiz;
+    if (apkPath == nullptr) return;
+    const char* c = env->GetStringUTFChars(apkPath, nullptr);
+    if (!c) return;
+    std::string p(c);
+    env->ReleaseStringUTFChars(apkPath, c);
+    load_config_from_apk(p);
 }
 
 extern "C" JNIEXPORT void JNICALL
