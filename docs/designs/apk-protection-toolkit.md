@@ -34,11 +34,11 @@ Android 开发者希望给自己的 APK 增加防篡改、防调试、防抓包�
 分三层，核心引擎为纯 Java 模块（不依赖 Android framework），保证可在本地 JVM 上编译与测试：
 
 1. **处理引擎（`:engine`，纯 Java）**
-   - APK 解析（基于 `com.jaredrummler:apk-parser`，读取包名/入口 Activity/签名信息）
+   - APK 解析（基于 `net.dongliu:apk-parser`，读取包名/入口 Activity/签名信息）
    - 字节码插桩（基于 `org.smali:dexlib2`：向目标 APK 注入保护壳 smali，改写 Application/入口类继承链与初始化调用）
    - 字符串加密（StringFog 思路：编译期对常量字符串加密、运行期解密；由插桩阶段完成对目标 dex 的字符串改写与解密存根注入）
    - 重打包（对解包后的 dex/资源重新封装为 APK）
-   - 签名（基于 `com.github.patrickfav:apksig`：v2/v3 签名，支持自定义 keystore）
+   - 签名（基于 `com.android.tools.build:apksig`：v2/v3 签名，支持自定义 keystore）
 2. **保护运行时（`:guard`，Android 库）**：被注入目标 APK 的壳代码。能力项：签名校验、反调试（frida/lsposed/xposed/gg 检测）、包名检测、抓包检测（VPN/WiFi 代理）、Root 检测、网络检测、到期退出。命中策略：退出程序（默认）或静默日志（可配）。到期退出支持自定义到期时间。
 3. **工具箱 App（`:app`，Kotlin + Jetpack Compose + Hilt + Room + DataStore）**：任务管理 UI。功能：选择 APK、勾选保护项（含各检测项开关与到期时间设置）、处理进度/日志、任务历史（Room）、设置页（自动签名开关、自定义签名导入、输出目录配置，默认 Download 目录）。
 

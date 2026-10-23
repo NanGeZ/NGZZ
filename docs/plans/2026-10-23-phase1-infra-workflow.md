@@ -17,12 +17,12 @@ verify:
     kind: exists
 
 - [ ] **Step 2: 编写 :engine 冒烟单测（红）**
-action: 在 `engine/src/test/java/com/tianmen/ngz/engine/EngineDepsSmokeTest.java` 创建 JUnit4 测试类 `EngineDepsSmokeTest`，包含三个测试方法：`apkParserAvailable`（`Class.forName("com.jaredrummler.apk.parser.ApkParser")` 不抛异常）、`apksigAvailable`（`Class.forName("com.android.apksig.ApkSigner")` 不抛异常）、`dexlib2Available`（`Class.forName("org.jf.dexlib2.Opcodes")` 不抛异常）。
+action: 在 `engine/src/test/java/com/tianmen/ngz/engine/EngineDepsSmokeTest.java` 创建 JUnit4 测试类 `EngineDepsSmokeTest`，包含三个测试方法：`apkParserAvailable`（`Class.forName("net.dongliu.apk.parser.ApkFile")` 不抛异常）、`apksigAvailable`（`Class.forName("com.android.apksig.ApkSigner")` 不抛异常）、`dexlib2Available`（`Class.forName("org.jf.dexlib2.Opcodes")` 不抛异常）。
 loop: false
 verify: ./gradlew :engine:test --tests "com.tianmen.ngz.engine.EngineDepsSmokeTest"
 
 - [ ] **Step 3: 实现 :engine 依赖接入（绿）**
-action: 在 `engine/build.gradle.kts` 的 dependencies 中声明 `com.jaredrummler:apk-parser:2.2.1`、`com.github.patrickfav:apksig:0.10.2`、`org.smali:dexlib2:2.5.2`（若版本在仓库中不可解析则调整为可用版本并保持 API 兼容），确保 Step 2 的测试编译与运行通过。
+action: 在 `engine/build.gradle.kts` 的 dependencies 中声明 `net.dongliu:apk-parser:2.6.10`、`com.android.tools.build:apksig:8.7.3`、`org.smali:dexlib2:2.5.2`（若版本在仓库中不可解析则调整为可用版本并保持 API 兼容），确保 Step 2 的测试编译与运行通过。
 loop: until Step 2 的三个测试全部通过
 max_iterations: 3
 verify: ./gradlew :engine:test --tests "com.tianmen.ngz.engine.EngineDepsSmokeTest"
@@ -33,7 +33,7 @@ loop: false
 verify: ./gradlew :engine:test --tests "com.tianmen.ngz.engine.ApkInspectorTest"
 
 - [ ] **Step 5: 实现 :engine APK 解析接口（绿）**
-action: 在 `engine/src/main/java/com/tianmen/ngz/engine/` 创建 `ApkInspector.java`（公开方法 `ApkInfo inspect(java.io.File apk)`，内部用 apk-parser 解析；解析失败抛出自定义 `EngineException`）与 `ApkInfo.java`（至少含 `String getPackageName()`、`String getVersionName()`、`String getEntryActivity()` 字段与 getter）。确保 Step 4 测试通过；若 apk-parser 对畸形 manifest 抛异常，则 `ApkInspector` 必须抛出 `EngineException` 而非其他异常，测试相应调整断言为「不抛非 EngineException 异常」。
+action: 在 `engine/src/main/java/com/tianmen/ngz/engine/` 创建 `ApkInspector.java`（公开方法 `ApkInfo inspect(java.io.File apk)`，内部用 net.dongliu apk-parser 解析；解析失败抛出自定义 `EngineException`）与 `ApkInfo.java`（至少含 `String getPackageName()`、`String getVersionName()`、`String getEntryActivity()` 字段与 getter）。确保 Step 4 测试通过；若 apk-parser 对畸形 manifest 抛异常，则 `ApkInspector` 必须抛出 `EngineException` 而非其他异常，测试相应调整断言为「不抛非 EngineException 异常」。
 loop: until Step 4 测试通过
 max_iterations: 3
 verify: ./gradlew :engine:test --tests "com.tianmen.ngz.engine.ApkInspectorTest"
