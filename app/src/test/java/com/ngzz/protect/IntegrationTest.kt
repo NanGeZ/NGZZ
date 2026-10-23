@@ -38,7 +38,8 @@ class IntegrationTest {
             "expiry" to true
         )
         val config = ConfigCodec.build(switches)
-        assertEquals(4, config.size)
+        assertEquals(ConfigCodec.SIZE, config.size)
+        assertArrayEquals(byteArrayOf(0x4E, 0x5A, 0x43, 0x46), config.copyOfRange(0, 4))
         val flags = ConfigCodec.decode(config)
         assertEquals(0x7f, flags)
     }
@@ -57,6 +58,26 @@ class IntegrationTest {
         val config = ConfigCodec.build(switches)
         val flags = ConfigCodec.decode(config)
         assertEquals(0x7f and (1 shl 1).inv(), flags)
+    }
+
+    @Test
+    fun `config codec roundtrips expiry seconds`() {
+        val expiryMillis = 1798761599000L
+        val config = ConfigCodec.build(mapOf("expiry" to true), expiryMillis)
+        assertEquals(expiryMillis / 1000, ConfigCodec.decodeExpirySeconds(config))
+    }
+
+    @Test
+    fun `config codec default expiry is zero`() {
+        val config = ConfigCodec.build(mapOf("sign" to true))
+        assertEquals(0L, ConfigCodec.decodeExpirySeconds(config))
+    }
+
+    @Test
+    fun `config codec decodes legacy 4 byte format`() {
+        val legacy = byteArrayOf(0x7F, 0, 0, 0)
+        assertEquals(0x7f, ConfigCodec.decode(legacy))
+        assertEquals(0L, ConfigCodec.decodeExpirySeconds(legacy))
     }
 
     @Test

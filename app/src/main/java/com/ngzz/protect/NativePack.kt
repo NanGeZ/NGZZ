@@ -19,4 +19,6 @@ class NativePack {
     external fun nativeDetectEx(flags: Int): Int
 
     external fun nativeGuard(flags: Int)
+
+    external fun nativeLoadConfig(apkPath: String)
 }

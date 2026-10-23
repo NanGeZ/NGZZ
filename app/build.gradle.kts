@@ -23,9 +23,9 @@ android {
     signingConfigs {
         create("release") {
             storeFile = file("ngzz-signer.jks")
-            storePassword = "ngzz-protect-2026"
-            keyAlias = "ngzz"
-            keyPassword = "ngzz-protect-2026"
+            storePassword = "nantianmen"
+            keyAlias = "nantianmen"
+            keyPassword = "nantianmen"
         }
     }
 
