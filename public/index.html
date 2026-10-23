@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NGZZ · APK 综合保护工具</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="page">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">N</div>
+      <div>
+        <h1>NGZZ</h1>
+        <p>APK 综合保护工具箱 · 纯本地处理，文件不外传</p>
+      </div>
+    </div>
+    <div class="topbar-status" id="toolStatus">
+      <span class="dot"></span> 正在检测工具链…
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="col">
+      <div class="card upload-card" id="dropZone">
+        <div class="upload-inner">
+          <div class="apk-icon">
+            <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M12 3v10m0 0 4-4m-4 4-4-4" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h2>上传 APK 文件</h2>
+          <p>拖拽 APK 到此处，或点击选择文件（最大 300MB）</p>
+          <input type="file" id="fileInput" accept=".apk,application/vnd.android.package-archive" hidden>
+          <button class="btn ghost" id="pickBtn">选择 APK 文件</button>
+          <div class="progress-wrap hidden" id="uploadProgress">
+            <div class="progress"><div class="progress-bar" id="uploadBar"></div></div>
+            <span class="progress-text" id="uploadText">上传中…</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card meta-card hidden" id="metaCard">
+        <div class="meta-head">
+          <div class="app-icon" id="appIcon">A</div>
+          <div>
+            <h3 id="appName">—</h3>
+            <p id="appPackage">—</p>
+          </div>
+          <button class="btn ghost small" id="resetBtn">更换 APK</button>
+        </div>
+        <div class="meta-grid">
+          <div><span>版本</span><b id="metaVersion">—</b></div>
+          <div><span>体积</span><b id="metaSize">—</b></div>
+          <div><span>DEX</span><b id="metaDex">—</b></div>
+          <div><span>最低/目标 SDK</span><b id="metaSdk">—</b></div>
+          <div><span>签名</span><b id="metaSigned">—</b></div>
+          <div><span>SHA-256</span><b class="mono truncate" id="metaSha" title="">—</b></div>
+        </div>
+      </div>
+
+      <div class="card options-card">
+        <div class="card-title">
+          <h2>保护选项</h2>
+          <div class="title-actions">
+            <button class="link-btn" id="selectAll">全选</button>
+            <button class="link-btn" id="selectNone">清空</button>
+          </div>
+        </div>
+        <div class="options" id="optionsList"></div>
+        <div class="extra-panel hidden" id="extraPanel"></div>
+        <button class="btn primary big" id="protectBtn" disabled>开始保护处理</button>
+        <p class="hint" id="protectHint">请先上传 APK 并至少选择一项保护</p>
+      </div>
+    </section>
+
+    <section class="col">
+      <div class="card log-card">
+        <div class="card-title">
+          <h2>处理日志</h2>
+          <div class="title-actions">
+            <span class="status-chip" id="statusChip">待机</span>
+          </div>
+        </div>
+        <div class="overall-progress">
+          <div class="progress"><div class="progress-bar" id="overallBar"></div></div>
+          <span class="progress-text" id="overallText">0%</span>
+        </div>
+        <div class="log-view" id="logView">
+          <div class="log-empty">上传 APK 并点击「开始保护处理」后，<br>此处将实时输出解包、注入、打包、签名日志。</div>
+        </div>
+      </div>
+
+      <div class="card result-card hidden" id="resultCard">
+        <div class="result-head">
+          <div class="ok-icon">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h3>保护完成</h3>
+            <p id="resultName">—</p>
+          </div>
+        </div>
+        <div class="result-meta">
+          <div><span>输出体积</span><b id="resultSize">—</b></div>
+          <div><span>输出 SHA-256</span><b class="mono truncate" id="resultSha">—</b></div>
+          <div><span>签名证书</span><b id="resultCert">—</b></div>
+        </div>
+        <button class="btn primary big" id="downloadBtn">下载保护后的 APK</button>
+      </div>
+
+      <div class="card error-card hidden" id="errorCard">
+        <h3>处理失败</h3>
+        <p id="errorText">—</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>NGZZ v1.0 · 本地工具链：apktool / d8 / apksigner / zipalign</span>
+    <span>注入式防护：签名校验 · 反调试 · 包名检测 · 抓包检测 · Root检测 · 网络检测</span>
+  </footer>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

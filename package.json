@@ -1,0 +1,13 @@
+{
+  "name": "ngzz-apk-protector",
+  "version": "1.0.0",
+  "description": "NGZZ — 高强度、纯本地、全自动 APK 综合保护工具箱",
+  "private": true,
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
