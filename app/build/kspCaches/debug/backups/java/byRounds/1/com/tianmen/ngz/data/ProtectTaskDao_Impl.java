@@ -37,7 +37,7 @@ public final class ProtectTaskDao_Impl implements ProtectTaskDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR ABORT INTO `ProtectTask` (`id`,`inputPath`,`outputPath`,`packageName`,`status`,`createdAt`) VALUES (nullif(?, 0),?,?,?,?,?)";
+        return "INSERT OR ABORT INTO `ProtectTask` (`id`,`inputPath`,`outputPath`,`outputUri`,`packageName`,`status`,`signed`,`createdAt`) VALUES (nullif(?, 0),?,?,?,?,?,?,?)";
       }
 
       @Override
@@ -46,9 +46,12 @@ public final class ProtectTaskDao_Impl implements ProtectTaskDao {
         statement.bindLong(1, entity.getId());
         statement.bindString(2, entity.getInputPath());
         statement.bindString(3, entity.getOutputPath());
-        statement.bindString(4, entity.getPackageName());
-        statement.bindString(5, entity.getStatus());
-        statement.bindLong(6, entity.getCreatedAt());
+        statement.bindString(4, entity.getOutputUri());
+        statement.bindString(5, entity.getPackageName());
+        statement.bindString(6, entity.getStatus());
+        final int _tmp = entity.getSigned() ? 1 : 0;
+        statement.bindLong(7, _tmp);
+        statement.bindLong(8, entity.getCreatedAt());
       }
     };
   }
@@ -84,8 +87,10 @@ public final class ProtectTaskDao_Impl implements ProtectTaskDao {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
           final int _cursorIndexOfInputPath = CursorUtil.getColumnIndexOrThrow(_cursor, "inputPath");
           final int _cursorIndexOfOutputPath = CursorUtil.getColumnIndexOrThrow(_cursor, "outputPath");
+          final int _cursorIndexOfOutputUri = CursorUtil.getColumnIndexOrThrow(_cursor, "outputUri");
           final int _cursorIndexOfPackageName = CursorUtil.getColumnIndexOrThrow(_cursor, "packageName");
           final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
+          final int _cursorIndexOfSigned = CursorUtil.getColumnIndexOrThrow(_cursor, "signed");
           final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
           final List<ProtectTask> _result = new ArrayList<ProtectTask>(_cursor.getCount());
           while (_cursor.moveToNext()) {
@@ -96,13 +101,19 @@ public final class ProtectTaskDao_Impl implements ProtectTaskDao {
             _tmpInputPath = _cursor.getString(_cursorIndexOfInputPath);
             final String _tmpOutputPath;
             _tmpOutputPath = _cursor.getString(_cursorIndexOfOutputPath);
+            final String _tmpOutputUri;
+            _tmpOutputUri = _cursor.getString(_cursorIndexOfOutputUri);
             final String _tmpPackageName;
             _tmpPackageName = _cursor.getString(_cursorIndexOfPackageName);
             final String _tmpStatus;
             _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
+            final boolean _tmpSigned;
+            final int _tmp;
+            _tmp = _cursor.getInt(_cursorIndexOfSigned);
+            _tmpSigned = _tmp != 0;
             final long _tmpCreatedAt;
             _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            _item = new ProtectTask(_tmpId,_tmpInputPath,_tmpOutputPath,_tmpPackageName,_tmpStatus,_tmpCreatedAt);
+            _item = new ProtectTask(_tmpId,_tmpInputPath,_tmpOutputPath,_tmpOutputUri,_tmpPackageName,_tmpStatus,_tmpSigned,_tmpCreatedAt);
             _result.add(_item);
           }
           return _result;

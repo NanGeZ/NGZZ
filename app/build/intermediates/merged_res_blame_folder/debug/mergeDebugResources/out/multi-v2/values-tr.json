@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.tianmen.ngz.app-mergeDebugResources-61:/values-tr/values-tr.xml",
+            "outputFile": "com.tianmen.ngz.app-mergeDebugResources-62:/values-tr/values-tr.xml",
             "map": [
                 {
-                    "source": "/root/.gradle/caches/8.14/transforms/48da334418b5aa5f028ebe70e8615aa7/transformed/foundation-release/res/values-tr/values-tr.xml",
+                    "source": "/root/.gradle/caches/8.14/transforms/7a228b8f22cb469aa9045ad8c3807c19/transformed/foundation-release/res/values-tr/values-tr.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/root/.gradle/caches/8.14/transforms/bbd06be27385e58aa00b1ce2ba46e1c7/transformed/material3-release/res/values-tr/values-tr.xml",
+                    "source": "/root/.gradle/caches/8.14/transforms/ad21dc7069fc4316daf52c1b0312bd1b/transformed/material3-release/res/values-tr/values-tr.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -38,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "/root/.gradle/caches/8.14/transforms/b4dfc4dd9ccdd23bd8749302f61d8ec9/transformed/ui-release/res/values-tr/values-tr.xml",
+                    "source": "/root/.gradle/caches/8.14/transforms/8f67f427c5b51f571eceb9067ef8d790/transformed/ui-release/res/values-tr/values-tr.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -55,7 +55,7 @@
                     }
                 },
                 {
-                    "source": "/root/.gradle/caches/8.14/transforms/ff6a70fca215f16005bdca91a3e0b642/transformed/core-1.13.1/res/values-tr/values-tr.xml",
+                    "source": "/root/.gradle/caches/8.14/transforms/8ba063912f75e1d7030c6a0c61b2d36b/transformed/core-1.13.1/res/values-tr/values-tr.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",

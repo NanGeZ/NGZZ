@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.tianmen.ngz.engine.pipeline.OutputManagerTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-23T08:05:46.279Z" hostname="all-in-one-89-zk5s8" time="0.031">
+<testsuite name="com.tianmen.ngz.engine.pipeline.OutputManagerTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-23T08:51:52.469Z" hostname="all-in-one-89-zk5s8" time="0.005">
   <properties/>
   <testcase name="resolveOutputUnderBaseDir" classname="com.tianmen.ngz.engine.pipeline.OutputManagerTest" time="0.002"/>
-  <testcase name="createsBaseDirIfMissing" classname="com.tianmen.ngz.engine.pipeline.OutputManagerTest" time="0.029"/>
+  <testcase name="createsBaseDirIfMissing" classname="com.tianmen.ngz.engine.pipeline.OutputManagerTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

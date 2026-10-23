@@ -8,7 +8,8 @@ import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.tianmen.ngz.data.NgzDatabase;
+import com.tianmen.ngz.di.AppModule_ProvideDatabaseFactory;
 import com.tianmen.ngz.di.AppModule_ProvideSettingsRepositoryFactory;
 import com.tianmen.ngz.di.AppModule_ProvideSettingsStoreFactory;
 import com.tianmen.ngz.settings.SettingsRepository;
@@ -30,11 +31,14 @@ import dagger.hilt.android.internal.modules.ApplicationContextModule;
 import dagger.hilt.android.internal.modules.ApplicationContextModule_ProvideContextFactory;
 import dagger.internal.DaggerGenerated;
 import dagger.internal.DoubleCheck;
+import dagger.internal.IdentifierNameString;
+import dagger.internal.KeepFieldType;
+import dagger.internal.LazyClassKeyMap;
 import dagger.internal.Preconditions;
+import dagger.internal.Provider;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.processing.Generated;
-import javax.inject.Provider;
 
 @DaggerGenerated
 @Generated(
@@ -360,17 +364,16 @@ public final class DaggerNgzApplication_HiltComponents_SingletonC {
 
     @Override
     public void injectMainActivity(MainActivity mainActivity) {
-      injectMainActivity2(mainActivity);
     }
 
     @Override
     public DefaultViewModelFactories.InternalFactoryFactory getHiltInternalFactoryFactory() {
-      return DefaultViewModelFactories_InternalFactoryFactory_Factory.newInstance(ImmutableMap.<Class<?>, Boolean>of(), new ViewModelCBuilder(singletonCImpl, activityRetainedCImpl));
+      return DefaultViewModelFactories_InternalFactoryFactory_Factory.newInstance(getViewModelKeys(), new ViewModelCBuilder(singletonCImpl, activityRetainedCImpl));
     }
 
     @Override
     public Map<Class<?>, Boolean> getViewModelKeys() {
-      return ImmutableMap.<Class<?>, Boolean>of();
+      return LazyClassKeyMap.<Boolean>of(ImmutableMap.<String, Boolean>of(LazyClassKeyProvider.com_tianmen_ngz_ProtectViewModel, ProtectViewModel_HiltModules.KeyModule.provide()));
     }
 
     @Override
@@ -388,10 +391,12 @@ public final class DaggerNgzApplication_HiltComponents_SingletonC {
       return new ViewCBuilder(singletonCImpl, activityRetainedCImpl, activityCImpl);
     }
 
-    @CanIgnoreReturnValue
-    private MainActivity injectMainActivity2(MainActivity instance) {
-      MainActivity_MembersInjector.injectSettingsRepository(instance, singletonCImpl.provideSettingsRepositoryProvider.get());
-      return instance;
+    @IdentifierNameString
+    private static final class LazyClassKeyProvider {
+      static String com_tianmen_ngz_ProtectViewModel = "com.tianmen.ngz.ProtectViewModel";
+
+      @KeepFieldType
+      ProtectViewModel com_tianmen_ngz_ProtectViewModel2;
     }
   }
 
@@ -402,23 +407,69 @@ public final class DaggerNgzApplication_HiltComponents_SingletonC {
 
     private final ViewModelCImpl viewModelCImpl = this;
 
+    private Provider<ProtectViewModel> protectViewModelProvider;
+
     private ViewModelCImpl(SingletonCImpl singletonCImpl,
         ActivityRetainedCImpl activityRetainedCImpl, SavedStateHandle savedStateHandleParam,
         ViewModelLifecycle viewModelLifecycleParam) {
       this.singletonCImpl = singletonCImpl;
       this.activityRetainedCImpl = activityRetainedCImpl;
 
+      initialize(savedStateHandleParam, viewModelLifecycleParam);
 
     }
 
+    @SuppressWarnings("unchecked")
+    private void initialize(final SavedStateHandle savedStateHandleParam,
+        final ViewModelLifecycle viewModelLifecycleParam) {
+      this.protectViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 0);
+    }
+
     @Override
-    public Map<Class<?>, Provider<ViewModel>> getHiltViewModelMap() {
-      return ImmutableMap.<Class<?>, Provider<ViewModel>>of();
+    public Map<Class<?>, javax.inject.Provider<ViewModel>> getHiltViewModelMap() {
+      return LazyClassKeyMap.<javax.inject.Provider<ViewModel>>of(ImmutableMap.<String, javax.inject.Provider<ViewModel>>of(LazyClassKeyProvider.com_tianmen_ngz_ProtectViewModel, ((Provider) protectViewModelProvider)));
     }
 
     @Override
     public Map<Class<?>, Object> getHiltViewModelAssistedMap() {
       return ImmutableMap.<Class<?>, Object>of();
+    }
+
+    @IdentifierNameString
+    private static final class LazyClassKeyProvider {
+      static String com_tianmen_ngz_ProtectViewModel = "com.tianmen.ngz.ProtectViewModel";
+
+      @KeepFieldType
+      ProtectViewModel com_tianmen_ngz_ProtectViewModel2;
+    }
+
+    private static final class SwitchingProvider<T> implements Provider<T> {
+      private final SingletonCImpl singletonCImpl;
+
+      private final ActivityRetainedCImpl activityRetainedCImpl;
+
+      private final ViewModelCImpl viewModelCImpl;
+
+      private final int id;
+
+      SwitchingProvider(SingletonCImpl singletonCImpl, ActivityRetainedCImpl activityRetainedCImpl,
+          ViewModelCImpl viewModelCImpl, int id) {
+        this.singletonCImpl = singletonCImpl;
+        this.activityRetainedCImpl = activityRetainedCImpl;
+        this.viewModelCImpl = viewModelCImpl;
+        this.id = id;
+      }
+
+      @SuppressWarnings("unchecked")
+      @Override
+      public T get() {
+        switch (id) {
+          case 0: // com.tianmen.ngz.ProtectViewModel 
+          return (T) new ProtectViewModel(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule), singletonCImpl.provideSettingsRepositoryProvider.get(), singletonCImpl.provideDatabaseProvider.get());
+
+          default: throw new AssertionError(id);
+        }
+      }
     }
   }
 
@@ -427,7 +478,7 @@ public final class DaggerNgzApplication_HiltComponents_SingletonC {
 
     private final ActivityRetainedCImpl activityRetainedCImpl = this;
 
-    private dagger.internal.Provider<ActivityRetainedLifecycle> provideActivityRetainedLifecycleProvider;
+    private Provider<ActivityRetainedLifecycle> provideActivityRetainedLifecycleProvider;
 
     private ActivityRetainedCImpl(SingletonCImpl singletonCImpl,
         SavedStateHandleHolder savedStateHandleHolderParam) {
@@ -452,7 +503,7 @@ public final class DaggerNgzApplication_HiltComponents_SingletonC {
       return provideActivityRetainedLifecycleProvider.get();
     }
 
-    private static final class SwitchingProvider<T> implements dagger.internal.Provider<T> {
+    private static final class SwitchingProvider<T> implements Provider<T> {
       private final SingletonCImpl singletonCImpl;
 
       private final ActivityRetainedCImpl activityRetainedCImpl;
@@ -496,9 +547,11 @@ public final class DaggerNgzApplication_HiltComponents_SingletonC {
 
     private final SingletonCImpl singletonCImpl = this;
 
-    private dagger.internal.Provider<SettingsStore> provideSettingsStoreProvider;
+    private Provider<SettingsStore> provideSettingsStoreProvider;
 
-    private dagger.internal.Provider<SettingsRepository> provideSettingsRepositoryProvider;
+    private Provider<SettingsRepository> provideSettingsRepositoryProvider;
+
+    private Provider<NgzDatabase> provideDatabaseProvider;
 
     private SingletonCImpl(ApplicationContextModule applicationContextModuleParam) {
       this.applicationContextModule = applicationContextModuleParam;
@@ -510,6 +563,7 @@ public final class DaggerNgzApplication_HiltComponents_SingletonC {
     private void initialize(final ApplicationContextModule applicationContextModuleParam) {
       this.provideSettingsStoreProvider = DoubleCheck.provider(new SwitchingProvider<SettingsStore>(singletonCImpl, 1));
       this.provideSettingsRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<SettingsRepository>(singletonCImpl, 0));
+      this.provideDatabaseProvider = DoubleCheck.provider(new SwitchingProvider<NgzDatabase>(singletonCImpl, 2));
     }
 
     @Override
@@ -531,7 +585,7 @@ public final class DaggerNgzApplication_HiltComponents_SingletonC {
       return new ServiceCBuilder(singletonCImpl);
     }
 
-    private static final class SwitchingProvider<T> implements dagger.internal.Provider<T> {
+    private static final class SwitchingProvider<T> implements Provider<T> {
       private final SingletonCImpl singletonCImpl;
 
       private final int id;
@@ -550,6 +604,9 @@ public final class DaggerNgzApplication_HiltComponents_SingletonC {
 
           case 1: // com.tianmen.ngz.settings.SettingsStore 
           return (T) AppModule_ProvideSettingsStoreFactory.provideSettingsStore(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
+
+          case 2: // com.tianmen.ngz.data.NgzDatabase 
+          return (T) AppModule_ProvideDatabaseFactory.provideDatabase(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
           default: throw new AssertionError(id);
         }

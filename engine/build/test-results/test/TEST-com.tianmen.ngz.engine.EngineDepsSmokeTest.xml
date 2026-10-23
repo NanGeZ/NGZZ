@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.tianmen.ngz.engine.EngineDepsSmokeTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-23T08:05:46.252Z" hostname="all-in-one-89-zk5s8" time="0.006">
+<testsuite name="com.tianmen.ngz.engine.EngineDepsSmokeTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-23T08:51:52.137Z" hostname="all-in-one-89-zk5s8" time="0.008">
   <properties/>
-  <testcase name="apksigAvailable" classname="com.tianmen.ngz.engine.EngineDepsSmokeTest" time="0.002"/>
+  <testcase name="apksigAvailable" classname="com.tianmen.ngz.engine.EngineDepsSmokeTest" time="0.005"/>
   <testcase name="apkParserAvailable" classname="com.tianmen.ngz.engine.EngineDepsSmokeTest" time="0.0"/>
-  <testcase name="dexlib2Available" classname="com.tianmen.ngz.engine.EngineDepsSmokeTest" time="0.003"/>
+  <testcase name="dexlib2Available" classname="com.tianmen.ngz.engine.EngineDepsSmokeTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

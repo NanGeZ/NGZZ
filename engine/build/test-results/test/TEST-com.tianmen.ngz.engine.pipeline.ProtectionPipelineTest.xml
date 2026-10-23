@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.tianmen.ngz.engine.pipeline.ProtectionPipelineTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-23T08:05:46.312Z" hostname="all-in-one-89-zk5s8" time="1.178">
+<testsuite name="com.tianmen.ngz.engine.pipeline.ProtectionPipelineTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-23T08:51:52.478Z" hostname="all-in-one-89-zk5s8" time="1.511">
   <properties/>
-  <testcase name="pipelineProducesUnsignedOutput" classname="com.tianmen.ngz.engine.pipeline.ProtectionPipelineTest" time="0.008"/>
+  <testcase name="pipelineProducesUnsignedOutput" classname="com.tianmen.ngz.engine.pipeline.ProtectionPipelineTest" time="0.042"/>
   <testcase name="pipelineRejectsMissingInput" classname="com.tianmen.ngz.engine.pipeline.ProtectionPipelineTest" time="0.001"/>
-  <testcase name="pipelineSignsWithGeneratedKeystore" classname="com.tianmen.ngz.engine.pipeline.ProtectionPipelineTest" time="1.169"/>
+  <testcase name="pipelineSignsWithGeneratedKeystore" classname="com.tianmen.ngz.engine.pipeline.ProtectionPipelineTest" time="1.467"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

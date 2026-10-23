@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.tianmen.ngz.engine.guard.GuardPolicyTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-23T08:05:46.260Z" hostname="all-in-one-89-zk5s8" time="0.002">
+<testsuite name="com.tianmen.ngz.engine.guard.GuardPolicyTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-23T08:51:52.147Z" hostname="all-in-one-89-zk5s8" time="0.007">
   <properties/>
-  <testcase name="decidesExitWhenExitOnHit" classname="com.tianmen.ngz.engine.guard.GuardPolicyTest" time="0.001"/>
+  <testcase name="decidesExitWhenExitOnHit" classname="com.tianmen.ngz.engine.guard.GuardPolicyTest" time="0.005"/>
   <testcase name="ignoresDisabledCheck" classname="com.tianmen.ngz.engine.guard.GuardPolicyTest" time="0.0"/>
   <testcase name="expiryRespectsCustomTime" classname="com.tianmen.ngz.engine.guard.GuardPolicyTest" time="0.0"/>
   <testcase name="decidesLogWhenExitOnHitFalse" classname="com.tianmen.ngz.engine.guard.GuardPolicyTest" time="0.0"/>

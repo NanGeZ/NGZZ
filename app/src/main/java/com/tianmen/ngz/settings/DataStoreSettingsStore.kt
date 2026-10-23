@@ -18,6 +18,7 @@ class DataStoreSettingsStore(private val context: Context) : SettingsStore {
         val KEY_PASSWORD = stringPreferencesKey("keyPassword")
         val STORE_PASSWORD = stringPreferencesKey("storePassword")
         val KEYSTORE_URI = stringPreferencesKey("keystoreUri")
+        val KEYSTORE_PATH = stringPreferencesKey("keystorePath")
         val OUTPUT_DIR = stringPreferencesKey("outputDir")
     }
 
@@ -29,6 +30,7 @@ class DataStoreSettingsStore(private val context: Context) : SettingsStore {
             keyPassword = prefs[Keys.KEY_PASSWORD] ?: NgzSettings.DEFAULT.keyPassword,
             storePassword = prefs[Keys.STORE_PASSWORD] ?: NgzSettings.DEFAULT.storePassword,
             keystoreUri = prefs[Keys.KEYSTORE_URI] ?: NgzSettings.DEFAULT.keystoreUri,
+            keystorePath = prefs[Keys.KEYSTORE_PATH] ?: NgzSettings.DEFAULT.keystorePath,
             outputDir = prefs[Keys.OUTPUT_DIR] ?: NgzSettings.DEFAULT.outputDir,
         )
     }
@@ -41,6 +43,7 @@ class DataStoreSettingsStore(private val context: Context) : SettingsStore {
                 prefs[Keys.KEY_PASSWORD] = settings.keyPassword
                 prefs[Keys.STORE_PASSWORD] = settings.storePassword
                 prefs[Keys.KEYSTORE_URI] = settings.keystoreUri
+                prefs[Keys.KEYSTORE_PATH] = settings.keystorePath
                 prefs[Keys.OUTPUT_DIR] = settings.outputDir
             }
         }

@@ -155,7 +155,8 @@ public final class NgzApplication_HiltComponents {
           HiltWrapper_ActivityRetainedComponentManager_LifecycleModule.class,
           HiltWrapper_SavedStateHandleModule.class,
           ActivityCBuilderModule.class,
-          ViewModelCBuilderModule.class
+          ViewModelCBuilderModule.class,
+          ProtectViewModel_HiltModules.KeyModule.class
       }
   )
   @ActivityRetainedScoped
@@ -190,7 +191,10 @@ public final class NgzApplication_HiltComponents {
   }
 
   @Subcomponent(
-      modules = HiltWrapper_HiltViewModelFactory_ViewModelModule.class
+      modules = {
+          HiltWrapper_HiltViewModelFactory_ViewModelModule.class,
+          ProtectViewModel_HiltModules.BindsModule.class
+      }
   )
   @ViewModelScoped
   public abstract static class ViewModelC implements ViewModelComponent,
