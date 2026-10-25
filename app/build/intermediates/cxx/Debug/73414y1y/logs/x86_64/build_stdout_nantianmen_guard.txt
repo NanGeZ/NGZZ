@@ -1,0 +1,2 @@
+ninja: Entering directory `/workspace/app/.cxx/Debug/73414y1y/x86_64'
+ninja: no work to do.

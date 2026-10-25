@@ -21,12 +21,10 @@ object ProtectPipeline {
         apkFile: File,
         outputDir: File,
         options: ProtectOptions,
+        ownApkPath: String = "",
         onStep: (ProtectProgress) -> Unit
     ): Flow<ProtectResult> = flow {
         val messages = mutableListOf<String>()
-        try {
-            emit(ProtectResult(false, null, messages, null))
-        } catch (_: Throwable) {}
 
         onStep(ProtectProgress(ProtectStep.ANALYZE, "分析 APK", apkFile.name, 0.05f))
         val analysis = ApkAnalyzer.analyze(apkFile)
@@ -66,7 +64,14 @@ object ProtectPipeline {
         val guardDex = buildGuardDex(featureBits, pkg, originalApp)
         messages.add("保护 DEX 已生成 (${guardDex.size / 1024}KB)")
 
-        val nativeLibs = loadNativeLibs()
+        val nativeLibs = loadNativeLibs(ownApkPath)
+        if (nativeLibs.isEmpty()) {
+            val err = "限制: 无法读取内置保护原生库 (libnantianmen_guard.so)，已中止以避免生成无法启动的 APK"
+            messages.add("✗ $err")
+            onStep(ProtectProgress(ProtectStep.ERROR, "中止", err, 0.35f))
+            emit(ProtectResult(false, null, messages, null))
+            return@flow
+        }
         messages.add("原生库: ${nativeLibs.size} 个 ABI")
 
         onStep(ProtectProgress(ProtectStep.ASSEMBLE, "重组 APK", "写入修改后的内容", 0.55f))
@@ -150,19 +155,26 @@ object ProtectPipeline {
         return GuardDexBuilder.buildDex(features, pkg, originalApp)
     }
 
-    private fun loadNativeLibs(): Map<String, ByteArray> {
-        val libs = mutableMapOf<String, ByteArray>()
-        val abis = listOf("arm64-v8a", "armeabi-v7a", "x86_64", "x86")
-        for (abi in abis) {
+    /** 从本应用自身 APK 中读取打包好的保护原生库（Android 上 classloader 资源流不可用于读取 APK 条目） */
+    private fun loadNativeLibs(ownApkPath: String): Map<String, ByteArray> {
+        val libs = linkedMapOf<String, ByteArray>()
+        if (ownApkPath.isBlank()) return libs
+        return try {
+            val zip = ZipFile(ownApkPath)
             try {
-                val libPath = "lib/$abi/libnantianmen_guard.so"
-                val res = ProtectPipeline::class.java.classLoader?.getResourceAsStream(libPath)
-                if (res != null) {
-                    libs[libPath] = res.readBytes()
+                for (e in zip.entries()) {
+                    if (e.isDirectory) continue
+                    if (e.name.startsWith("lib/") && e.name.endsWith("/libnantianmen_guard.so")) {
+                        libs[e.name] = zip.getInputStream(e).readBytes()
+                    }
                 }
-            } catch (_: Throwable) {}
+            } finally {
+                zip.close()
+            }
+            libs
+        } catch (_: Throwable) {
+            emptyMap()
         }
-        return libs
     }
 
     private fun rebuildApk(
@@ -174,6 +186,17 @@ object ProtectPipeline {
         pkg: String
     ) {
         val zip = ZipFile(input)
+        // 找出已有 DEX 的最大编号，保护 DEX 追加为下一个 classesN.dex（Android 5+ ART 自动加载全部 classesN.dex）
+        var maxDexIndex = 0
+        for (e in zip.entries()) {
+            val m = Regex("^classes(\\d*)\\.dex$").matchEntire(e.name)
+            if (m != null) {
+                val n = m.groupValues[1].toIntOrNull() ?: 1
+                if (n > maxDexIndex) maxDexIndex = n
+            }
+        }
+        val guardDexName = if (maxDexIndex == 0) "classes.dex" else "classes${maxDexIndex + 1}.dex"
+
         val zos = ZipOutputStream(output.outputStream().buffered())
         val written = mutableSetOf<String>()
 
@@ -215,12 +238,15 @@ object ProtectPipeline {
             }
         }
 
-        if (!written.contains("classes.dex")) {
-            val entry = ZipEntry("classes.dex")
-            entry.method = ZipEntry.DEFLATED
+        if (!written.contains(guardDexName)) {
+            val entry = ZipEntry(guardDexName)
+            entry.method = ZipEntry.STORED
+            entry.size = guardDex.size.toLong()
+            entry.crc = java.util.zip.CRC32().also { it.update(guardDex) }.value
             zos.putNextEntry(entry)
             zos.write(guardDex)
             zos.closeEntry()
+            written.add(guardDexName)
         }
 
         for ((path, data) in nativeLibs) {

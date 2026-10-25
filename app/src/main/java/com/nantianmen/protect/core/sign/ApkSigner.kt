@@ -35,8 +35,8 @@ object ApkSigner {
 
     private const val SIG_BLOCK_MAGIC = "APK Sig Block 42"
     private const val SIG_V2_ID = 0x7109871a
-    private const val SIG_V3_ID = 0xf05368c0.toInt()
     private const val CHUNK_SIZE = 1024 * 1024
+    private const val ALG_RSA_PKCS1_SHA256 = 0x0103
 
     data class SignResult(val success: Boolean, val message: String)
 
@@ -73,97 +73,105 @@ object ApkSigner {
 
     fun signApk(input: File, output: File, key: PrivateKey, cert: X509Certificate): SignResult {
         return try {
+            val manifestBytes: ByteArray
+            val sfBytes: ByteArray
+            val entries: List<ZipEntry>
             val zip = ZipFile(input)
-            val entries = zip.entries().toList()
-            val manifest = Manifest()
-            val main = manifest.mainAttributes
-            main[Attributes.Name.MANIFEST_VERSION] = "1.0"
-            main[Attributes.Name("Created-By")] = "Nantianmen APK Protector"
+            try {
+                entries = zip.entries().toList()
+                val manifest = Manifest()
+                val main = manifest.mainAttributes
+                main[Attributes.Name.MANIFEST_VERSION] = "1.0"
+                main[Attributes.Name("Created-By")] = "Nantianmen APK Protector"
 
-            val digests = mutableMapOf<String, String>()
-            for (e in entries) {
-                if (e.isDirectory || e.name == "META-INF/MANIFEST.MF" ||
-                    e.name.endsWith(".SF") || e.name.endsWith(".RSA") ||
-                    e.name.endsWith(".DSA") || e.name.endsWith(".EC")
-                ) continue
-                val bytes = zip.getInputStream(e).readBytes()
-                val md = MessageDigest.getInstance("SHA-256")
-                val digest = md.digest(bytes)
-                val b64 = android.util.Base64.encodeToString(digest, android.util.Base64.NO_WRAP)
-                digests[e.name] = b64
-                val attr = Attributes()
-                attr[Attributes.Name("SHA-256-Digest")] = b64
-                manifest.entries[e.name] = attr
-            }
-
-            val manifestBytes = ByteArrayOutputStream().also { manifest.write(it) }.toByteArray()
-            val sfBytes = buildSf(manifestBytes, digests)
-            val sigBlock = buildSigBlock(cert, key, manifestBytes, sfBytes, entries, zip)
-
-            val tmpOut = File(output.parentFile, output.name + ".tmp")
-            val zos = ZipOutputStream(tmpOut.outputStream().buffered())
-            zos.setMethod(ZipOutputStream.DEFLATED)
-
-            val written = mutableSetOf<String>()
-
-            for (e in entries) {
-                if (e.name.startsWith("META-INF/") && (e.name.endsWith(".SF") || e.name.endsWith(".RSA") ||
-                            e.name.endsWith(".DSA") || e.name.endsWith(".EC") || e.name == "META-INF/MANIFEST.MF")
-                ) continue
-                if (e.isDirectory) continue
-                val bytes = zip.getInputStream(e).readBytes()
-                val entry = ZipEntry(e.name)
-                if (e.method == ZipEntry.STORED) {
-                    entry.method = ZipEntry.STORED
-                    entry.size = bytes.size.toLong()
-                    entry.crc = crc32(bytes)
-                } else {
-                    entry.method = ZipEntry.DEFLATED
+                val digests = mutableMapOf<String, String>()
+                for (e in entries) {
+                    if (e.isDirectory || isSignatureEntry(e.name)) continue
+                    val bytes = zip.getInputStream(e).readBytes()
+                    val md = MessageDigest.getInstance("SHA-256")
+                    val b64 = java.util.Base64.getEncoder().encodeToString(md.digest(bytes))
+                    digests[e.name] = b64
+                    val attr = Attributes()
+                    attr[Attributes.Name("SHA-256-Digest")] = b64
+                    manifest.entries[e.name] = attr
                 }
-                zos.putNextEntry(entry)
-                zos.write(bytes)
-                zos.closeEntry()
-                written.add(e.name)
+                manifestBytes = ByteArrayOutputStream().also { manifest.write(it) }.toByteArray()
+                sfBytes = buildSf(manifestBytes, digests)
+            } finally {
+                zip.close()
             }
 
-            val mfEntry = ZipEntry("META-INF/MANIFEST.MF")
-            mfEntry.method = ZipEntry.DEFLATED
-            zos.putNextEntry(mfEntry)
-            zos.write(manifestBytes)
-            zos.closeEntry()
+            // 临时文件名必须区别于 input（protect 流水线的 input 也叫 *.apk.tmp）
+            val tmpOut = File(output.parentFile, output.name + ".sign.tmp")
+            ZipOutputStream(tmpOut.outputStream().buffered()).use { zos ->
+                val zip2 = ZipFile(input)
+                try {
+                    for (e in zip2.entries()) {
+                        if (e.isDirectory || isSignatureEntry(e.name)) continue
+                        val bytes = zip2.getInputStream(e).readBytes()
+                        val entry = ZipEntry(e.name)
+                        if (e.method == ZipEntry.STORED) {
+                            entry.method = ZipEntry.STORED
+                            entry.size = bytes.size.toLong()
+                            entry.crc = crc32(bytes)
+                        } else {
+                            entry.method = ZipEntry.DEFLATED
+                        }
+                        zos.putNextEntry(entry)
+                        zos.write(bytes)
+                        zos.closeEntry()
+                    }
+                } finally {
+                    zip2.close()
+                }
+                for ((name, bytes) in listOf(
+                    "META-INF/MANIFEST.MF" to manifestBytes,
+                    "META-INF/CERT.SF" to sfBytes,
+                    "META-INF/CERT.RSA" to signPkcs7(cert, key, manifestBytes, sfBytes)
+                )) {
+                    val entry = ZipEntry(name)
+                    entry.method = ZipEntry.DEFLATED
+                    zos.putNextEntry(entry)
+                    zos.write(bytes)
+                    zos.closeEntry()
+                }
+            }
 
-            val sfEntry = ZipEntry("META-INF/CERT.SF")
-            sfEntry.method = ZipEntry.DEFLATED
-            zos.putNextEntry(sfEntry)
-            zos.write(sfBytes)
-            zos.closeEntry()
+            // 计算 v2 内容摘要：按规范分三段（ZIP 条目区 / 中央目录 / EOCD）分块
+            val unsigned = tmpOut.readBytes()
+            val eocdOffset = findEocd(unsigned)
+            val cdOffset = readLe32(unsigned, eocdOffset + 16)
+            val cdSize = readLe32(unsigned, eocdOffset + 12)
+            val section1 = unsigned.copyOfRange(0, cdOffset)
+            val section3 = unsigned.copyOfRange(cdOffset, eocdOffset)
+            val section4 = unsigned.copyOfRange(eocdOffset, unsigned.size)
+            val contentDigest = contentDigestV2(listOf(section1, section3, section4))
+            val sigBlock = buildV2SigBlock(cert, key, contentDigest)
 
-            val rsaEntry = ZipEntry("META-INF/CERT.RSA")
-            rsaEntry.method = ZipEntry.DEFLATED
-            zos.putNextEntry(rsaEntry)
-            zos.write(signPkcs7(cert, key, manifestBytes, sfBytes))
-            zos.closeEntry()
-
-            zos.close()
-            zip.close()
-
-            appendSigBlock(tmpOut, output, sigBlock)
+            appendSigBlock(unsigned, output, sigBlock)
             tmpOut.delete()
 
-            SignResult(true, "签名完成: ${output.name}")
+            SignResult(true, "签名完成（v1+v2）: ${output.name}")
         } catch (t: Throwable) {
             t.printStackTrace()
             SignResult(false, "签名失败: ${t.message}")
         }
     }
 
+    private fun isSignatureEntry(name: String): Boolean =
+        name.startsWith("META-INF/") && (
+                name.endsWith(".SF") || name.endsWith(".RSA") || name.endsWith(".DSA") ||
+                        name.endsWith(".EC") || name == "META-INF/MANIFEST.MF" || name == "META-INF/CERT.SF"
+                )
+
     private fun buildSf(manifestBytes: ByteArray, digests: Map<String, String>): ByteArray {
         val sb = StringBuilder()
         sb.append("Signature-Version: 1.0\r\n")
         sb.append("Created-By: Nantianmen APK Protector\r\n")
         val md = MessageDigest.getInstance("SHA-256")
-        val mfDigest = android.util.Base64.encodeToString(md.digest(manifestBytes), android.util.Base64.NO_WRAP)
-        sb.append("SHA-256-Digest-Manifest: $mfDigest\r\n\r\n")
+        val mfDigest = java.util.Base64.getEncoder().encodeToString(md.digest(manifestBytes))
+        sb.append("SHA-256-Digest-Manifest: $mfDigest\r\n")
+        sb.append("X-Android-APK-Signed: 2\r\n\r\n")
         for ((name, digest) in digests) {
             sb.append("Name: $name\r\n")
             sb.append("SHA-256-Digest: $digest\r\n\r\n")
@@ -171,102 +179,61 @@ object ApkSigner {
         return sb.toString().toByteArray(Charsets.UTF_8)
     }
 
-    private fun buildSigBlock(
-        cert: X509Certificate,
-        key: PrivateKey,
-        manifestBytes: ByteArray,
-        sfBytes: ByteArray,
-        entries: List<ZipEntry>,
-        zip: ZipFile
-    ): ByteArray {
-        val contentDigests = computeContentDigests(entries, zip)
-
-        val signerV2 = buildV2Signer(cert, key, contentDigests[0])
-        val signerV3 = buildV3Signer(cert, key, contentDigests[0])
-
-        val v2Block = pair(SIG_V2_ID, lengthPrefixedList(signerV2))
-        val v3Block = pair(SIG_V3_ID, lengthPrefixedList(signerV3))
-
-        val sizeOfBlock = v2Block.size.toLong() + v3Block.size.toLong() + 16
-        val block = ByteArrayOutputStream()
-        block.write(le64(sizeOfBlock))
-        block.write(v2Block)
-        block.write(v3Block)
-        block.write(le64(sizeOfBlock))
-        block.write(SIG_BLOCK_MAGIC.toByteArray(Charsets.US_ASCII))
-        return block.toByteArray()
-    }
-
-    private fun computeContentDigests(entries: List<ZipEntry>, zip: ZipFile): List<ByteArray> {
-        val chunks = mutableListOf<ByteArray>()
-        val sorted = entries.filter { !it.isDirectory }.sortedBy { it.name }
-        for (e in sorted) {
-            val bytes = zip.getInputStream(e).readBytes()
-            chunks.add(le32(if (e.method == ZipEntry.STORED) 0x00 else 0x01))
-            chunks.add(le32(bytes.size))
-            chunks.add(bytes)
+    /** v2 内容摘要：三段各按 1MB 分块，块摘要 = SHA256(0xa5 || len_le || data)，顶层 = SHA256(0x5a || 块数_le || 拼接) */
+    private fun contentDigestV2(sections: List<ByteArray>): ByteArray {
+        val chunkDigests = mutableListOf<ByteArray>()
+        val md = MessageDigest.getInstance("SHA-256")
+        for (section in sections) {
+            var off = 0
+            while (off < section.size) {
+                val len = minOf(CHUNK_SIZE, section.size - off)
+                md.reset()
+                md.update(0xa5.toByte())
+                md.update(le32(len))
+                md.update(section, off, len)
+                chunkDigests.add(md.digest())
+                off += len
+            }
         }
-        val md1 = MessageDigest.getInstance("SHA-256")
-        val md2 = MessageDigest.getInstance("SHA-512")
-        for (chunk in chunks) {
-            md1.update(chunk)
-            md2.update(chunk)
-        }
-        return listOf(md1.digest(), md2.digest())
+        val top = MessageDigest.getInstance("SHA-256")
+        top.update(0x5a.toByte())
+        top.update(le32(chunkDigests.size))
+        for (d in chunkDigests) top.update(d)
+        return top.digest()
     }
 
-    private fun buildV2Signer(cert: X509Certificate, key: PrivateKey, digest: ByteArray): ByteArray {
-        val signedData = DERSequence(
-            arrayOf(
-                DERSequence(ASN1EncodableVector().apply {
-                    add(ASN1Integer(0))
-                    add(DERSequence(arrayOf<org.bouncycastle.asn1.ASN1Encodable>(NISTObjectIdentifiers.id_sha256, DERNull.INSTANCE)))
-                    add(org.bouncycastle.asn1.ASN1OctetString.getInstance(digest))
-                }),
-                DERSequence(arrayOf(certCertificate(cert)))
-            )
-        )
+    /** 按 APK Signature Scheme v2 规范构建含 v2 块的 APK Signing Block（全部为 uint32 小端 length-prefixed 格式） */
+    private fun buildV2SigBlock(cert: X509Certificate, key: PrivateKey, digest: ByteArray): ByteArray {
+        // signed data = digests + certificates + additional attributes
+        val digestElem = le32(ALG_RSA_PKCS1_SHA256) + le32(digest.size) + digest
+        val digestsSeq = le32(digestElem.size) + digestElem
+        val digestsBlock = le32(digestsSeq.size) + digestsSeq
 
-        val sigBytes = signData(key, signedData.encoded)
-        val signatures = DERSequence(
-            arrayOf<org.bouncycastle.asn1.ASN1Encodable>(
-                DERSequence(
-                    arrayOf<org.bouncycastle.asn1.ASN1Encodable>(
-                        AlgorithmIdentifier(PKCSObjectIdentifiers.sha256WithRSAEncryption, DERNull.INSTANCE),
-                        org.bouncycastle.asn1.DEROctetString(sigBytes)
-                    )
-                )
-            )
-        )
+        val certDer = cert.encoded
+        val certsSeq = le32(certDer.size) + certDer
+        val certsBlock = le32(certsSeq.size) + certsSeq
 
-        val signedDataFull = DERSequence(
-            arrayOf<org.bouncycastle.asn1.ASN1Encodable>(
-                signedData,
-                DERSequence(
-                    arrayOf<org.bouncycastle.asn1.ASN1Encodable>(
-                        AlgorithmIdentifier(PKCSObjectIdentifiers.sha256WithRSAEncryption, DERNull.INSTANCE),
-                        org.bouncycastle.asn1.DEROctetString(sigBytes)
-                    )
-                ),
-                org.bouncycastle.asn1.DEROctetString(cert.encoded)
-            )
-        )
+        val attrsBlock = le32(0)
 
-        return DERSequence(
-            arrayOf(
-                signedDataFull,
-                signatures,
-                DERSequence(arrayOf(ASN1Integer(0)))
-            )
-        ).encoded
-    }
+        val signedData = digestsBlock + certsBlock + attrsBlock
 
-    private fun buildV3Signer(cert: X509Certificate, key: PrivateKey, digest: ByteArray): ByteArray {
-        return buildV2Signer(cert, key, digest)
-    }
+        val signature = signData(key, signedData)
+        val sigElem = le32(ALG_RSA_PKCS1_SHA256) + le32(signature.size) + signature
+        val signaturesSeq = le32(sigElem.size) + sigElem
 
-    private fun certCertificate(cert: X509Certificate): org.bouncycastle.asn1.ASN1Encodable {
-        return org.bouncycastle.asn1.ASN1Primitive.fromByteArray(cert.encoded)
+        val spki = cert.publicKey.encoded
+
+        val signer = le32(signedData.size) + signedData +
+                le32(signaturesSeq.size) + signaturesSeq +
+                le32(spki.size) + spki
+        val signerElem = le32(signer.size) + signer
+        val signersSeq = le32(signerElem.size) + signerElem
+
+        val pair = le64(signersSeq.size + 4L) + le32(SIG_V2_ID) + signersSeq
+        val sizeOfBlock = pair.size + 8 + 16
+        return le64(sizeOfBlock.toLong()) + pair +
+                le64(sizeOfBlock.toLong()) +
+                SIG_BLOCK_MAGIC.toByteArray(Charsets.US_ASCII)
     }
 
     private fun signData(key: PrivateKey, data: ByteArray): ByteArray {
@@ -286,31 +253,31 @@ object ApkSigner {
         val sigBytes = signature.sign()
 
         val algorithmIdentifier = AlgorithmIdentifier(PKCSObjectIdentifiers.sha256WithRSAEncryption, DERNull.INSTANCE)
+        // SignerInfo.digestAlgorithm 必须是纯摘要 OID（id-sha256），签名算法才是 sha256WithRSAEncryption
+        val digestAlgorithmIdentifier = AlgorithmIdentifier(NISTObjectIdentifiers.id_sha256, DERNull.INSTANCE)
 
         val digestAlgorithms = DERSet(
-            DERSequence(
-                arrayOf<org.bouncycastle.asn1.ASN1Encodable>(
-                    AlgorithmIdentifier(NISTObjectIdentifiers.id_sha256, DERNull.INSTANCE)
-                )
-            )
+            AlgorithmIdentifier(NISTObjectIdentifiers.id_sha256, DERNull.INSTANCE)
         )
 
+        // ContentInfo.content 为 [0] EXPLICIT，必须用 context tag 0 包裹 OCTET STRING
         val contentInfo = DERSequence(
             arrayOf<org.bouncycastle.asn1.ASN1Encodable>(
                 PKCSObjectIdentifiers.data,
-                org.bouncycastle.asn1.DEROctetString(sfBytes)
+                org.bouncycastle.asn1.DERTaggedObject(true, 0, org.bouncycastle.asn1.DEROctetString(sfBytes))
             )
         )
 
-        val certificates = org.bouncycastle.asn1.ASN1Set.getInstance(
-            org.bouncycastle.asn1.ASN1Primitive.fromByteArray(cert.encoded)
+        // certificates 为 [0]（implicit 语义，内容为证书 SEQUENCE 本体）
+        val certificates = org.bouncycastle.asn1.DERTaggedObject(
+            true, 0, org.bouncycastle.asn1.ASN1Primitive.fromByteArray(cert.encoded)
         )
 
         val signerInfo = DERSequence(
             arrayOf<org.bouncycastle.asn1.ASN1Encodable>(
                 ASN1Integer(1),
                 DERSequence(arrayOf<org.bouncycastle.asn1.ASN1Encodable>(certIssuer(cert), ASN1Integer(cert.serialNumber))),
-                algorithmIdentifier,
+                digestAlgorithmIdentifier,
                 algorithmIdentifier,
                 org.bouncycastle.asn1.DEROctetString(sigBytes)
             )
@@ -329,7 +296,7 @@ object ApkSigner {
         val contentInfoSigned = DERSequence(
             arrayOf(
                 PKCSObjectIdentifiers.signedData,
-                signedData
+                org.bouncycastle.asn1.DERTaggedObject(true, 0, signedData)
             )
         )
 
@@ -361,27 +328,24 @@ object ApkSigner {
         return JcaX509CertificateConverter().getCertificate(holder)
     }
 
-    private fun appendSigBlock(tmpIn: File, out: File, sigBlock: ByteArray) {
-        val original = tmpIn.readBytes()
+    private fun appendSigBlock(original: ByteArray, out: File, sigBlock: ByteArray) {
         val eocdOffset = findEocd(original)
         val cdOffset = readLe32(original, eocdOffset + 16)
         val cdSize = readLe32(original, eocdOffset + 12)
-        val cdOffset64 = cdOffset.toLong() and 0xFFFFFFFFL
-        val cdSize64 = cdSize.toLong() and 0xFFFFFFFFL
 
-        val newCdOffset = sigBlock.size.toLong() + cdOffset64
-        val beforeCd = original.copyOfRange(0, cdOffset64.toInt())
-        val cd = original.copyOfRange(cdOffset64.toInt(), cdOffset64.toInt() + cdSize64.toInt())
+        val beforeCd = original.copyOfRange(0, cdOffset)
+        val cd = original.copyOfRange(cdOffset, cdOffset + cdSize)
         val eocd = original.copyOfRange(eocdOffset, original.size)
 
         val newEocd = eocd.copyOf()
-        writeLe32(newEocd, 16, newCdOffset.toInt())
+        writeLe32(newEocd, 16, cdOffset + sigBlock.size)
 
-        val outStream = out.outputStream()
-        outStream.write(sigBlock)
-        outStream.write(cd)
-        outStream.write(newEocd)
-        outStream.close()
+        out.outputStream().use { w ->
+            w.write(beforeCd)
+            w.write(sigBlock)
+            w.write(cd)
+            w.write(newEocd)
+        }
     }
 
     private fun findEocd(data: ByteArray): Int {
@@ -392,25 +356,6 @@ object ApkSigner {
             }
         }
         throw IllegalStateException("EOCD not found")
-    }
-
-    private fun pair(id: Int, value: ByteArray): ByteArray {
-        val out = ByteArrayOutputStream()
-        out.write(le64(value.size.toLong() + 4))
-        out.write(le32(id))
-        out.write(value)
-        return out.toByteArray()
-    }
-
-    private fun lengthPrefixedList(vararg items: ByteArray): ByteArray {
-        val total = items.sumOf { it.size + 4 }
-        val out = ByteArrayOutputStream()
-        out.write(le32(total))
-        for (item in items) {
-            out.write(le32(item.size))
-            out.write(item)
-        }
-        return out.toByteArray()
     }
 
     private fun le32(v: Int): ByteArray = byteArrayOf(

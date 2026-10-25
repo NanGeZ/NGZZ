@@ -64,7 +64,6 @@ object AxmlParser {
                     buf.position(chunkStart + chunkSize)
                 }
                 RES_XML_START_ELEMENT_TYPE -> {
-                    buf.short
                     val line = buf.int
                     buf.int
                     val nsIdx = buf.int
@@ -77,7 +76,7 @@ object AxmlParser {
                     buf.short
 
                     val node = AxmlNode(str(strings, nameIdx))
-                    val attrBase = chunkStart + headerSize + (attrStart - headerSize)
+                    val attrBase = chunkStart + headerSize + attrStart
                     for (i in 0 until attrCount) {
                         val p = attrBase + i * attrSize
                         val aNs = readInt(data, p)

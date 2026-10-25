@@ -77,7 +77,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             val outputDir = File(getApplication<Application>().filesDir, "protected")
             ProtectPipeline.protect(
                 apkFile, outputDir,
-                ProtectOptions(features, _state.value.autoSign)
+                ProtectOptions(features, _state.value.autoSign),
+                getApplication<Application>().applicationInfo.sourceDir
             ) { progress ->
                 _state.value = _state.value.copy(progress = progress)
             }.collect { result ->

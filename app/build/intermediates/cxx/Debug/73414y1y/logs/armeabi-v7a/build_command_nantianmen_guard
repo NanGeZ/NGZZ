@@ -1,0 +1,4 @@
+/opt/android-sdk/cmake/3.22.1/bin/ninja \
+  -C \
+  /workspace/app/.cxx/Debug/73414y1y/armeabi-v7a \
+  nantianmen_guard

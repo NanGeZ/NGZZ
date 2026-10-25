@@ -255,7 +255,7 @@ object DexEncoder {
         val dataOff = align(off, 4)
         val dataStart = dataOff
 
-        mapItem(0x0000, 1, mapListOff)
+        mapItem(0x0000, 1, dataStart + mapListOff)
         mapItem(0x0001, strings.size, stringIdsOff)
         mapItem(0x0002, types.size, typeIdsOff)
         mapItem(0x0003, protoList.size, protoIdsOff)
@@ -270,7 +270,7 @@ object DexEncoder {
         if (codeItems.isNotEmpty()) {
             mapItem(0x2001, codeItems.size, dataStart + codeStart)
         }
-        mapItem(0x1000, 1, mapListOff)
+        mapItem(0x1000, 1, dataStart + mapListOff)
 
         val mapBytes = ByteArrayOutputStream()
         mapBytes.write(mi(mapEntries.size))
@@ -305,8 +305,9 @@ object DexEncoder {
         out.write(mi(fileSize))
         out.write(mi(headerSize))
         out.write(mi(0x12345678))
-        out.write(mi(0))
-        out.write(ByteArray(16))
+        out.write(mi(0))                            // link_size
+        out.write(mi(0))                            // link_off
+        out.write(mi(dataStart + mapListOff))       // map_off
         out.write(mi(strings.size))
         out.write(mi(stringIdsOff))
         out.write(mi(types.size))
