@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.nantianmen.protect.core.protect.ProtectPipelineTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-25T16:04:23.675Z" hostname="all-in-one-73-lpvpf" time="0.997">
+<testsuite name="com.nantianmen.protect.core.protect.ProtectPipelineTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-25T16:19:52.926Z" hostname="all-in-one-73-lpvpf" time="2.649">
   <properties/>
-  <testcase name="protectProducesSignedApkWithGuardDex" classname="com.nantianmen.protect.core.protect.ProtectPipelineTest" time="0.997"/>
+  <testcase name="protectProducesSignedApkWithGuardDex" classname="com.nantianmen.protect.core.protect.ProtectPipelineTest" time="2.649"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

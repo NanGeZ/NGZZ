@@ -10,6 +10,12 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Android 9 及以下写公共存储 -->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <!-- Android 11+ 写 /storage/emulated/0/Nantianmen 需要"所有文件访问" -->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
     <permission
         android:name="com.nantianmen.protect.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"

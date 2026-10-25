@@ -28,7 +28,8 @@ fun NantianmenApp(
     onToggleFeature: (ProtectFeature) -> Unit,
     onSetAutoSign: (Boolean) -> Unit,
     onStartProtect: () -> Unit,
-    onSetTab: (Int) -> Unit
+    onSetTab: (Int) -> Unit,
+    onRequestStorage: () -> Unit = {}
 ) {
     Scaffold(
         bottomBar = {
@@ -49,8 +50,8 @@ fun NantianmenApp(
         }
     ) { padding ->
         when (state.tab) {
-            0 -> HomeScreen(state, onPickApk, onToggleFeature, onStartProtect, Modifier.padding(padding))
-            1 -> SettingsScreen(state, onSetAutoSign, Modifier.padding(padding))
+            0 -> HomeScreen(state, onPickApk, onToggleFeature, onStartProtect, onRequestStorage, Modifier.padding(padding))
+            1 -> SettingsScreen(state, onSetAutoSign, onRequestStorage, Modifier.padding(padding))
         }
     }
 }
@@ -61,6 +62,7 @@ fun HomeScreen(
     onPickApk: () -> Unit,
     onToggleFeature: (ProtectFeature) -> Unit,
     onStartProtect: () -> Unit,
+    onRequestStorage: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -138,6 +140,29 @@ fun HomeScreen(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
+            }
+        }
+
+        if (state.needStoragePrompt) {
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFFDEBD0))
+                ) {
+                    Column(Modifier.padding(16.dp)) {
+                        Text("需要文件访问权限", fontWeight = FontWeight.Bold, color = Color(0xFFB36B00))
+                        Text(
+                            "输出目录 ${MainViewModel.PUBLIC_OUTPUT_DIR} 不可写，请授予\"所有文件访问\"权限后重试",
+                            fontSize = 13.sp,
+                            color = Color(0xFF666666)
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        Button(
+                            onClick = onRequestStorage,
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4A6FA5))
+                        ) { Text("去授权") }
+                    }
+                }
             }
         }
 
@@ -220,7 +245,12 @@ fun FeatureRow(feature: ProtectFeature, checked: Boolean, onToggle: () -> Unit) 
 }
 
 @Composable
-fun SettingsScreen(state: UiState, onSetAutoSign: (Boolean) -> Unit, modifier: Modifier = Modifier) {
+fun SettingsScreen(
+    state: UiState,
+    onSetAutoSign: (Boolean) -> Unit,
+    onRequestStorage: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -229,6 +259,52 @@ fun SettingsScreen(state: UiState, onSetAutoSign: (Boolean) -> Unit, modifier: M
     ) {
         Text("设置", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color(0xFF2C2C2C))
         Spacer(Modifier.height(24.dp))
+
+        // 文件输出路径
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFFEDE8D0)),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            Column(Modifier.padding(16.dp)) {
+                Text("文件输出路径", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Spacer(Modifier.height(6.dp))
+                Text(
+                    MainViewModel.PUBLIC_OUTPUT_DIR,
+                    fontSize = 14.sp,
+                    color = Color(0xFF2D7D46),
+                    fontWeight = FontWeight.Medium
+                )
+                Spacer(Modifier.height(4.dp))
+                if (state.hasStorageAccess) {
+                    Text(
+                        "✓ 已授权，处理完成的 APK 会保存到该目录",
+                        fontSize = 12.sp,
+                        color = Color(0xFF2D7D46)
+                    )
+                } else {
+                    if (state.outputDir != MainViewModel.PUBLIC_OUTPUT_DIR) {
+                        Text(
+                            "当前回退目录: ${state.outputDir}",
+                            fontSize = 12.sp,
+                            color = Color(0xFF888888)
+                        )
+                    }
+                    Text(
+                        "⚠ 尚未获得该目录写入权限",
+                        fontSize = 12.sp,
+                        color = Color(0xFFB36B00)
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    Button(
+                        onClick = onRequestStorage,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4A6FA5))
+                    ) { Text("授予文件访问权限") }
+                }
+            }
+        }
+
+        Spacer(Modifier.height(16.dp))
 
         Card(
             modifier = Modifier.fillMaxWidth(),

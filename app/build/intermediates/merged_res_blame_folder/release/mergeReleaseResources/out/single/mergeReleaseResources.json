@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "com.nantianmen.protect.app-release-45:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.nantianmen.protect.app-main-46:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.nantianmen.protect.app-release-45:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.nantianmen.protect.app-main-46:/mipmap-anydpi-v26/ic_launcher.xml"
+    }
+]

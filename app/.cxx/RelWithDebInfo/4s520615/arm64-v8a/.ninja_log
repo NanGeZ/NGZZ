@@ -1,0 +1,3 @@
+# ninja log v5
+0	208	1792945197497702548	CMakeFiles/nantianmen_guard.dir/guard.c.o	a25c24e11e4324e7
+211	303	1792945197589702052	/workspace/app/build/intermediates/cxx/RelWithDebInfo/4s520615/obj/arm64-v8a/libnantianmen_guard.so	d16e4b3c5fc1db48

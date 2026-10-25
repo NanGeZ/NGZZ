@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.nantianmen.protect.core.sign.ApkSignerVerifyTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-25T16:04:24.681Z" hostname="all-in-one-73-lpvpf" time="0.597">
+<testsuite name="com.nantianmen.protect.core.sign.ApkSignerVerifyTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-25T16:19:55.580Z" hostname="all-in-one-73-lpvpf" time="0.933">
   <properties/>
-  <testcase name="signedZipPassesOfficialApksigner" classname="com.nantianmen.protect.core.sign.ApkSignerVerifyTest" time="0.597"/>
+  <testcase name="signedZipPassesOfficialApksigner" classname="com.nantianmen.protect.core.sign.ApkSignerVerifyTest" time="0.933"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

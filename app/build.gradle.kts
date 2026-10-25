@@ -16,10 +16,28 @@ android {
         versionName = "1.0.0"
     }
 
+    signingConfigs {
+        create("release") {
+            val ks = rootProject.file("keystore/nantianmen-release.jks")
+            if (ks.exists()) {
+                storeFile = ks
+                storePassword = "nantianmen2024"
+                keyAlias = "nantianmen"
+                keyPassword = "nantianmen2024"
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            // 正式版使用项目密钥签名；密钥缺失时回退 debug 签名，保证可产出可安装 APK
+            signingConfig = if (rootProject.file("keystore/nantianmen-release.jks").exists()) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug")
+            }
         }
     }
     compileOptions {

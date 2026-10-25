@@ -23,13 +23,72 @@ data class UiState(
     val isProtecting: Boolean = false,
     val progress: ProtectProgress = ProtectProgress(),
     val result: ProtectResult? = null,
-    val tab: Int = 0
+    val tab: Int = 0,
+    /** 文件输出目录（展示给用户） */
+    val outputDir: String = MainViewModel.PUBLIC_OUTPUT_DIR,
+    /** 是否已获得目标输出目录的写入权限 */
+    val hasStorageAccess: Boolean = false,
+    /** 需要引导用户授权（仅提示用） */
+    val needStoragePrompt: Boolean = false
 )
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
 
+    companion object {
+        /** 文件输出目录（公共存储，用户可直接访问） */
+        const val PUBLIC_OUTPUT_DIR = "/storage/emulated/0/Nantianmen"
+    }
+
     private val _state = MutableStateFlow(UiState())
     val state: StateFlow<UiState> = _state.asStateFlow()
+
+    init {
+        refreshStorage()
+    }
+
+    /** 从设置页/授权页返回后刷新存储权限与输出目录 */
+    fun refreshStorage() {
+        val granted = hasStorageAccess()
+        _state.value = _state.value.copy(
+            hasStorageAccess = granted,
+            outputDir = resolveOutputDir().absolutePath,
+            needStoragePrompt = false
+        )
+    }
+
+    /** 是否已具备写入目标公共目录的权限 */
+    fun hasStorageAccess(): Boolean {
+        val ctx = getApplication<Application>()
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            android.os.Environment.isExternalStorageManager()
+        } else {
+            androidx.core.content.ContextCompat.checkSelfPermission(
+                ctx, android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        }
+    }
+
+    /** 优先公共目录 /storage/emulated/0/Nantianmen；不可写时回退到应用外部私有目录 */
+    fun resolveOutputDir(): File {
+        val preferred = File(PUBLIC_OUTPUT_DIR)
+        if (isWritableDir(preferred)) return preferred
+        val ctx = getApplication<Application>()
+        val fallback = File(ctx.getExternalFilesDir(null) ?: ctx.filesDir, "Nantianmen")
+        fallback.mkdirs()
+        return fallback
+    }
+
+    private fun isWritableDir(dir: File): Boolean {
+        return try {
+            dir.mkdirs()
+            val probe = File(dir, ".nantianmen_write_probe")
+            probe.outputStream().use { it.write(0) }
+            probe.delete()
+            true
+        } catch (_: Throwable) {
+            false
+        }
+    }
 
     fun selectApk(uri: Uri) {
         val name = uri.lastPathSegment?.substringAfterLast('/') ?: "unknown.apk"
@@ -67,14 +126,24 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val features = _state.value.selectedFeatures
         if (features.isEmpty()) return
 
-        _state.value = _state.value.copy(isProtecting = true, result = null)
-        viewModelScope.launch {
+        _state.value = _state.value.copy(isProtecting = true, result = null, needStoragePrompt = false)
+        viewModelScope.launch(Dispatchers.IO) {
+            // 输出目录不可写时：未授权则引导去授权，已授权则回退私有目录
+            val preferredWritable = isWritableDir(File(PUBLIC_OUTPUT_DIR))
+            if (!preferredWritable && !hasStorageAccess()) {
+                _state.value = _state.value.copy(
+                    isProtecting = false, hasStorageAccess = false, needStoragePrompt = true
+                )
+                return@launch
+            }
+            val outputDir = resolveOutputDir()
+            _state.value = _state.value.copy(outputDir = outputDir.absolutePath)
+
             val apkFile = copyUriToFile(uri)
             if (apkFile == null) {
                 _state.value = _state.value.copy(isProtecting = false)
                 return@launch
             }
-            val outputDir = File(getApplication<Application>().filesDir, "protected")
             ProtectPipeline.protect(
                 apkFile, outputDir,
                 ProtectOptions(features, _state.value.autoSign),

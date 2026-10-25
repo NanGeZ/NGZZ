@@ -1,0 +1,4 @@
+/opt/android-sdk/cmake/3.22.1/bin/ninja \
+  -C \
+  /workspace/app/.cxx/RelWithDebInfo/4s520615/x86_64 \
+  nantianmen_guard
