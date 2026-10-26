@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.nantianmen.protect.core.protect.DemoSampleTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-26T03:24:47.459Z" hostname="all-in-one-89-6hcqt" time="0.89">
+  <properties/>
+  <testcase name="protectRealDemoSample" classname="com.nantianmen.protect.core.protect.DemoSampleTest" time="0.89"/>
+  <system-out><![CDATA[STEP ANALYZE: 分析 APK
+STEP MANIFEST: 修改 Manifest
+STEP DEX: 注入保护代码
+STEP ASSEMBLE: 重组 APK
+STEP SIGN: 签名
+STEP VERIFY: 验证
+STEP DONE: 完成
+MSG 分析完成: b5e0591a-8293-4c04-a8be-b7cf92245fed_demo_1.0.apk (20KB)
+MSG ⚠ 目标 APK 开启了 debuggable
+MSG ⚠ 目标 APK 允许备份 (allowBackup=true)
+MSG 包名: com.doubihuaji.demo
+MSG DEX: 1 个
+MSG 原生库: 无
+MSG Manifest 已注入 GuardApplication
+MSG 保护 DEX 已生成 (1KB)
+MSG 原生库: 4 个 ABI
+MSG APK 重组完成
+MSG 签名密钥已生成: nantianmen-sign.p12
+MSG 签名完成（v1+v2）: b5e0591a-8293-4c04-a8be-b7cf92245fed_demo_1.0_protected.apk
+MSG ✓ ZIP 结构完整
+MSG ✓ Manifest 有效
+MSG ✓ DEX 有效
+MSG ✓ 签名块存在
+OUTPUT: /tmp/ntmdemo11476180026738329/b5e0591a-8293-4c04-a8be-b7cf92245fed_demo_1.0_protected.apk
+COPIED /tmp/demo_protected.apk 69340
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

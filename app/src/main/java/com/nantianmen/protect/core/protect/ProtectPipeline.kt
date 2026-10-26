@@ -4,6 +4,7 @@ import com.nantianmen.protect.core.ApkAnalyzer
 import com.nantianmen.protect.core.axml.AxmlBuilder
 import com.nantianmen.protect.core.axml.AxmlParser
 import com.nantianmen.protect.core.axml.XmlElement
+import com.nantianmen.protect.core.dex.DexFileReader
 import com.nantianmen.protect.core.model.*
 import com.nantianmen.protect.core.sign.ApkSigner
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +62,11 @@ object ProtectPipeline {
         messages.add("Manifest 已注入 GuardApplication")
 
         onStep(ProtectProgress(ProtectStep.DEX, "注入保护代码", "生成 DEX 与原生库", 0.35f))
-        val guardDex = buildGuardDex(featureBits, pkg, originalApp)
+        val guardSuperApp = resolveGuardSuperclass(apkFile, originalApp)
+        if (guardSuperApp != descriptor(originalApp)) {
+            messages.add("原 Application 类不可继承，GuardApplication 改为继承 android.app.Application")
+        }
+        val guardDex = buildGuardDex(featureBits, pkg, guardSuperApp)
         messages.add("保护 DEX 已生成 (${guardDex.size / 1024}KB)")
 
         val nativeLibs = loadNativeLibs(ownApkPath)
@@ -151,8 +156,52 @@ object ProtectPipeline {
         parent.children.add(e)
     }
 
-    private fun buildGuardDex(features: Int, pkg: String, originalApp: String): ByteArray {
-        return GuardDexBuilder.buildDex(features, pkg, originalApp)
+    private fun descriptor(className: String): String =
+        if (className.startsWith("L") && className.endsWith(";")) className
+        else "L" + className.replace('.', '/') + ";"
+
+    /**
+     * GuardApplication 通过继承原 Application 类来保留其 attachBaseContext/onCreate。
+     * 只有原类可继承（public、非 final、非 abstract、非 interface、且确实存在于某个 DEX）时才能这么做，
+     * 否则回退为 android.app.Application——此时原类生命周期不再执行，但至少 APK 仍可安装启动。
+     */
+    private fun resolveGuardSuperclass(apk: File, originalApp: String): String {
+        val fallback = GuardDexBuilder.T_APP
+        val desc = descriptor(originalApp)
+        if (desc == fallback) return fallback
+        return try {
+            val zip = ZipFile(apk)
+            try {
+                var flags: Int? = null
+                for (e in zip.entries()) {
+                    if (e.isDirectory || !e.name.matches(Regex("^classes\\d*\\.dex$"))) continue
+                    val dex = DexFileReader.read(zip.getInputStream(e).readBytes())
+                    val typeIdx = dex.types.indexOf(desc)
+                    if (typeIdx >= 0) {
+                        flags = dex.classDefs.firstOrNull { it.classIdx == typeIdx }?.accessFlags
+                        break
+                    }
+                }
+                val ACC_PUBLIC = 0x1
+                val ACC_FINAL = 0x10
+                val ACC_INTERFACE = 0x200
+                val ACC_ABSTRACT = 0x400
+                val ok = flags != null &&
+                        flags and ACC_PUBLIC != 0 &&
+                        flags and ACC_FINAL == 0 &&
+                        flags and ACC_INTERFACE == 0 &&
+                        flags and ACC_ABSTRACT == 0
+                if (ok) desc else fallback
+            } finally {
+                zip.close()
+            }
+        } catch (_: Throwable) {
+            fallback
+        }
+    }
+
+    private fun buildGuardDex(features: Int, pkg: String, superApp: String): ByteArray {
+        return GuardDexBuilder.buildDex(features, pkg, superApp)
     }
 
     /** 从本应用自身 APK 中读取打包好的保护原生库（Android 上 classloader 资源流不可用于读取 APK 条目） */

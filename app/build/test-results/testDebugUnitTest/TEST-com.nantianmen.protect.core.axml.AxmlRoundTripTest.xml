@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.nantianmen.protect.core.axml.AxmlRoundTripTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-25T16:19:52.719Z" hostname="all-in-one-73-lpvpf" time="0.101">
-  <properties/>
-  <testcase name="buildAndParseRoundTrip" classname="com.nantianmen.protect.core.axml.AxmlRoundTripTest" time="0.101"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

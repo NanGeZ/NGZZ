@@ -113,24 +113,11 @@ object DexFileReader {
 
     private fun readUlebString(data: ByteArray, off: Int): String {
         var p = off
-        var len = 0
-        var shift = 0
-        while (true) {
-            val b = data[p].toInt() and 0xFF
-            p++
-            len = len or ((b and 0x7F) shl shift)
-            if (b and 0x80 == 0) break
-            shift += 7
-        }
-        var charLen = 0
-        shift = 0
-        while (true) {
-            val b = data[p].toInt() and 0xFF
-            p++
-            charLen = charLen or ((b and 0x7F) shl shift)
-            if (b and 0x80 == 0) break
-            shift += 7
-        }
-        return String(data, p, len, Charsets.UTF_8)
+        // string_data_item = uleb128(utf16_size) + MUTF-8 字节 + 0x00，没有字节长度字段
+        while (data[p].toInt() and 0x80 != 0) p++
+        p++
+        val start = p
+        while (data[p].toInt() != 0) p++
+        return String(data, start, p - start, Charsets.UTF_8)
     }
 }

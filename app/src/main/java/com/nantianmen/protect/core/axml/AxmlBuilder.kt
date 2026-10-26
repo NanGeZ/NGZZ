@@ -285,7 +285,14 @@ object AxmlBuilder {
             data.write(byteArrayOf(0, 0))
             off += header.size + utf16.size + 2
         }
-        val dataBytes = data.toByteArray()
+        var dataBytes = data.toByteArray()
+        // 字符串池数据必须补齐到 4 字节边界，否则 aapt2/PackageManager 拒绝解析
+        // （"XML size 0x... is not on an integer boundary"）
+        if (dataBytes.size % 4 != 0) {
+            val padded = ByteArray(dataBytes.size + (4 - dataBytes.size % 4))
+            dataBytes.copyInto(padded)
+            dataBytes = padded
+        }
         val headerSize = 28
         val offsetsSize = strings.size * 4
         val stringsStart = headerSize + offsetsSize

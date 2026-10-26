@@ -11,17 +11,22 @@ object Codegen {
 
     fun codeUnit(v: Int): ByteArray = byteArrayOf((v and 0xFF).toByte(), ((v shr 8) and 0xFF).toByte())
 
-    fun code16(op: Int, a: Int): ByteArray = op(op) + codeUnit(a)
+    fun code16(op: Int, a: Int): ByteArray = byteArrayOf(op.toByte(), 0) + codeUnit(a)
     fun code21c(op: Int, a: Int, idx: Int): ByteArray = byteArrayOf(op.toByte(), a.toByte()) + codeUnit(idx)
+
+    /**
+     * 35c 格式（3 个 code unit = 6 字节）：
+     *   byte0 = op，byte1 = A(参数个数) | G(第 5 个寄存器)
+     *   byte2..3 = 索引（小端），byte4 = D|C，byte5 = F|E
+     * 实测自 dexdump：`7053 b8fc 4012` → {v0, v4, v2, v1, v3}
+     */
     fun code35c(op: Int, argc: Int, idx: Int, regs: List<Int>): ByteArray {
-        val packed = ((argc and 0x0F) shl 4) or ((regs.getOrElse(4) { 0 } and 0x0F))
+        fun r(i: Int): Int = (regs.getOrElse(i) { 0 } and 0x0F)
         val out = ByteArrayOutputStream()
-        out.write(byteArrayOf(op.toByte(), packed.toByte()))
+        out.write(byteArrayOf(op.toByte(), ((argc and 0x0F) shl 4 or r(4)).toByte()))
         out.write(codeUnit(idx))
-        out.write(byteArrayOf((regs.getOrElse(0) { 0 } and 0x0F).toByte()))
-        out.write(byteArrayOf((regs.getOrElse(1) { 0 } and 0x0F).toByte()))
-        out.write(byteArrayOf((regs.getOrElse(2) { 0 } and 0x0F).toByte()))
-        out.write(byteArrayOf((regs.getOrElse(3) { 0 } and 0x0F).toByte()))
+        out.write(byteArrayOf(((r(1) shl 4) or r(0)).toByte()))
+        out.write(byteArrayOf(((r(3) shl 4) or r(2)).toByte()))
         return out.toByteArray()
     }
 
@@ -47,21 +52,14 @@ object Codegen {
         return out.toByteArray()
     }
 
-    fun code22c(op: Int, a: Int, b: Int, idx: Int): ByteArray = byteArrayOf(op.toByte(), a.toByte(), b.toByte()) + codeUnit(idx)
-    fun code22t(op: Int, a: Int, b: Int, offset: Int): ByteArray = byteArrayOf(op.toByte(), a.toByte(), b.toByte()) + codeUnit(offset)
-    fun code22x(op: Int, a: Int, b: Int): ByteArray = op(op, a) + codeUnit(b)
+    /** 22c/22t 格式（2 个 code unit = 4 字节）：byte1 = B|A，byte2..3 = 索引/偏移 */
+    fun code22c(op: Int, a: Int, b: Int, idx: Int): ByteArray =
+        byteArrayOf(op.toByte(), ((b and 0x0F) shl 4 or (a and 0x0F)).toByte()) + codeUnit(idx)
 
-    fun codeItem(insnsSize: Int, insns: ByteArray): ByteArray {
-        val out = ByteArrayOutputStream()
-        out.write(codeUnit(1))
-        out.write(codeUnit(1))
-        out.write(codeUnit(0))
-        out.write(codeUnit(insnsSize))
-        out.write(codeUnit(0))
-        out.write(codeUnit(0))
-        out.write(insns)
-        return out.toByteArray()
-    }
+    fun code22t(op: Int, a: Int, b: Int, offset: Int): ByteArray =
+        byteArrayOf(op.toByte(), ((b and 0x0F) shl 4 or (a and 0x0F)).toByte()) + codeUnit(offset)
+
+    fun code22x(op: Int, a: Int, b: Int): ByteArray = op(op, a) + codeUnit(b)
 
     fun wrapCatchAll(handler: Int): ByteArray {
         val out = ByteArrayOutputStream()
@@ -70,17 +68,27 @@ object Codegen {
         return out.toByteArray()
     }
 
+    // 静态字段 opcode：60 sget / 61 sget-wide / 62 sget-object / 63 sget-boolean
+    //                 67 sput  / 68 sput-wide  / 69 sput-object  / 6a sput-boolean
     fun staticFieldCode(f: Int): ByteArray = code21c(0x60, 0, f)
     fun sget(f: Int): ByteArray = code21c(0x60, 0, f)
-    fun sput(f: Int): ByteArray = code21c(0x62, 0, f)
+    fun sput(f: Int): ByteArray = code21c(0x67, 0, f)
     fun sgetTo(reg: Int, f: Int): ByteArray = code21c(0x60, reg, f)
-    fun sputFrom(reg: Int, f: Int): ByteArray = code21c(0x62, reg, f)
-    fun move(a: Int, b: Int): ByteArray = op(0x01, a, b)
+    fun sputFrom(reg: Int, f: Int): ByteArray = code21c(0x67, reg, f)
+    fun sgetInt(reg: Int, f: Int): ByteArray = code21c(0x60, reg, f)
+    fun sputInt(reg: Int, f: Int): ByteArray = code21c(0x67, reg, f)
+    fun sgetObject(reg: Int, f: Int): ByteArray = code21c(0x62, reg, f)
+    fun sputObject(reg: Int, f: Int): ByteArray = code21c(0x69, reg, f)
+    fun sgetBool(reg: Int, f: Int): ByteArray = code21c(0x63, reg, f)
+    fun sputBool(reg: Int, f: Int): ByteArray = code21c(0x6a, reg, f)
+
+    /** 12x 格式（1 个 code unit）：byte1 = B|A */
+    fun move(a: Int, b: Int): ByteArray = byteArrayOf(0x01, ((b and 0x0F) shl 4 or (a and 0x0F)).toByte())
 
     fun invokeStatic(m: Int, regs: List<Int>): ByteArray = code35c(0x71, regs.size, m, regs)
     fun invokeStaticRange(m: Int, argc: Int, firstReg: Int): ByteArray {
         val out = ByteArrayOutputStream()
-        out.write(byteArrayOf(0x74.toByte(), argc.toByte()))
+        out.write(byteArrayOf(0x77.toByte(), argc.toByte()))
         out.write(codeUnit(m))
         out.write(codeUnit(firstReg))
         return out.toByteArray()
@@ -113,8 +121,14 @@ object Codegen {
     fun iget(a: Int, b: Int, idx: Int): ByteArray = code22c(0x52, a, b, idx)
     fun iput(a: Int, b: Int, idx: Int): ByteArray = code22c(0x59, a, b, idx)
 
+    /** 22b 格式（2 个 code unit）：byte1 = B|A，byte2 = 有符号 8 位字面量，byte3 = 0 */
     fun code22b(op: Int, a: Int, b: Int, value: Int): ByteArray =
-        byteArrayOf(op.toByte(), a.toByte(), b.toByte()) + codeUnit(value)
+        byteArrayOf(
+            op.toByte(),
+            ((b and 0x0F) shl 4 or (a and 0x0F)).toByte(),
+            (value and 0xFF).toByte(),
+            0
+        )
 
     fun addIntLit8(a: Int, b: Int, v: Int): ByteArray = code22b(0xd8, a, b, v)
     fun addIntLit8_16(a: Int, b: Int, v: Int): ByteArray = code22b(0xd8, a, b, v)
