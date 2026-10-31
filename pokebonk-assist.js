@@ -187,30 +187,58 @@
     root.innerHTML = `
       <style>
         :host{all:initial}
-        *{box-sizing:border-box;font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
-        .fab{position:fixed;right:16px;bottom:16px;z-index:2147483647;width:52px;height:52px;border-radius:50%;
-          background:#e94756;color:#fff;border:0;cursor:pointer;font-size:22px;box-shadow:0 6px 20px rgba(0,0,0,.45)}
-        .panel{position:fixed;right:16px;bottom:80px;z-index:2147483647;width:264px;max-height:calc(100vh - 100px);overflow-y:auto;
-          background:#1a1630;color:#fff;border:1px solid #3a3160;border-radius:14px;padding:14px;
-          box-shadow:0 10px 40px rgba(0,0,0,.55);font-size:13px}
-        .panel h4{margin:0 0 10px;font-size:14px;letter-spacing:.5px;color:#ffd166}
-        .row{display:flex;align-items:center;justify-content:space-between;margin:10px 0 0}
-        .lbl{opacity:.92}
-        .desc{margin:4px 0 10px;padding-left:2px;font-size:10px;color:#7d75ae;line-height:1.5}
-        .sw{position:relative;width:40px;height:22px;border-radius:11px;background:#413a6b;cursor:pointer;transition:.2s;flex:none}
-        .sw.on{background:#3ec46d}
-        .sw::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}
-        .sw.on::after{left:20px}
-        .chips{display:flex;gap:4px;flex:none}
-        .chips b{padding:3px 7px;border-radius:7px;background:#413a6b;color:#cfc9f0;font-size:11px;font-weight:700;cursor:pointer;transition:.15s}
-        .chips b.on{background:#ffd166;color:#22203a}
-        .wipe{width:100%;margin-top:2px;padding:8px 0;border:0;border-radius:8px;background:#ffb703;color:#22203a;font-weight:700;cursor:pointer}
-        .st{margin-top:10px;font-size:11px;color:#8f86c7;line-height:1.5}
-        .stats{margin-top:9px;padding-top:8px;border-top:1px solid #2d2750;font-size:10px;color:#8f86c7;line-height:1.7}
+        *{box-sizing:border-box;font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-tap-highlight-color:transparent}
+        .fab{position:fixed;right:18px;bottom:18px;z-index:2147483647;width:54px;height:54px;border-radius:50%;
+          background:linear-gradient(135deg,#ff5d73,#c04aed);color:#fff;border:0;cursor:pointer;font-size:23px;line-height:1;
+          box-shadow:0 8px 24px rgba(224,72,110,.45),inset 0 1px 0 rgba(255,255,255,.25);transition:transform .18s,box-shadow .18s}
+        .fab:hover{transform:scale(1.08);box-shadow:0 10px 30px rgba(224,72,110,.6),inset 0 1px 0 rgba(255,255,255,.25)}
+        .fab:active{transform:scale(.94)}
+        .fab::before{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(255,93,115,.5);
+          animation:ring 2.4s ease-out infinite;pointer-events:none}
+        @keyframes ring{0%{transform:scale(.85);opacity:.9}70%{transform:scale(1.35);opacity:0}100%{opacity:0}}
+        .panel{position:fixed;right:18px;bottom:86px;z-index:2147483647;width:280px;max-height:calc(100vh - 110px);overflow-y:auto;
+          color:#fff;border-radius:18px;padding:16px;font-size:13px;
+          background:linear-gradient(165deg,rgba(38,31,70,.96),rgba(22,18,42,.96));backdrop-filter:blur(14px);
+          border:1px solid rgba(255,255,255,.09);box-shadow:0 18px 50px rgba(0,0,0,.6);animation:pop .22s ease-out}
+        @keyframes pop{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+        .hd{display:flex;align-items:center;justify-content:space-between}
+        .hd h4{margin:0;font-size:15px;letter-spacing:.5px;
+          background:linear-gradient(90deg,#ffd166,#ffa94d);-webkit-background-clip:text;background-clip:text;color:transparent}
+        .live{display:flex;align-items:center;gap:5px;font-size:10px;color:#7ee2a0}
+        .live i{width:7px;height:7px;border-radius:50%;background:#3ec46d;box-shadow:0 0 8px #3ec46d;animation:blink 1.6s infinite}
+        @keyframes blink{50%{opacity:.35}}
+        .sub{margin:2px 0 0;font-size:10px;color:#6f679e;letter-spacing:1px}
+        .grp{margin:14px 0 4px;padding-left:8px;border-left:3px solid #413a6b;font-size:10px;color:#8a82b8;letter-spacing:2px}
+        .row{display:flex;align-items:center;justify-content:space-between;padding:7px 8px;border-radius:10px;transition:background .15s}
+        .row:hover{background:rgba(255,255,255,.045)}
+        .lbl{font-weight:600}
+        .desc{margin:2px 0 8px;padding-left:11px;font-size:10px;color:#7d75ae;line-height:1.5}
+        .sw{position:relative;width:42px;height:23px;border-radius:12px;background:#3b3465;cursor:pointer;transition:.2s;flex:none;
+          box-shadow:inset 0 1px 3px rgba(0,0,0,.4)}
+        .sw.on{background:linear-gradient(90deg,#3ec46d,#28a85c);box-shadow:inset 0 1px 3px rgba(0,0,0,.25),0 0 12px rgba(62,196,109,.35)}
+        .sw::after{content:"";position:absolute;top:2.5px;left:2.5px;width:18px;height:18px;border-radius:50%;background:#fff;
+          box-shadow:0 1px 4px rgba(0,0,0,.35);transition:.2s}
+        .sw.on::after{left:21.5px}
+        .chips{display:flex;gap:2px;flex:none;padding:3px;border-radius:10px;background:rgba(0,0,0,.28);box-shadow:inset 0 1px 3px rgba(0,0,0,.35)}
+        .chips b{padding:4px 8px;border-radius:8px;background:transparent;color:#a79ede;font-size:11px;font-weight:700;cursor:pointer;transition:.15s}
+        .chips b:hover{color:#e6e1ff}
+        .chips b.on{background:linear-gradient(135deg,#ffd166,#ffb03a);color:#241f3d;box-shadow:0 2px 8px rgba(255,178,58,.35)}
+        .wipe{width:100%;margin-top:6px;padding:10px 0;border:0;border-radius:12px;cursor:pointer;font-weight:800;font-size:13px;letter-spacing:1px;
+          background:linear-gradient(135deg,#ffd166,#ff9f43);color:#2a2340;
+          box-shadow:0 6px 18px rgba(255,159,67,.3),inset 0 1px 0 rgba(255,255,255,.4);transition:.18s}
+        .wipe:hover{transform:translateY(-1px);box-shadow:0 9px 22px rgba(255,159,67,.45),inset 0 1px 0 rgba(255,255,255,.4)}
+        .wipe:active{transform:translateY(0) scale(.98)}
+        .st{margin-top:12px;font-size:11px;color:#8f86c7;line-height:1.5}
+        .stats{margin-top:8px;padding:9px 10px;border-radius:10px;background:rgba(0,0,0,.25);font-size:10px;color:#9a92cf;line-height:1.8}
+        .panel::-webkit-scrollbar{width:6px}
+        .panel::-webkit-scrollbar-thumb{background:#413a6b;border-radius:3px}
+        .panel::-webkit-scrollbar-track{background:transparent}
       </style>
       <button class="fab" title="PokéBonk 辅助">🎮</button>
       <div class="panel">
-        <h4>PokéBonk 辅助</h4>
+        <div class="hd"><h4>PokéBonk 辅助</h4><span class="live"><i></i>v3.0</span></div>
+        <div class="sub">POKÉBONK ASSIST · 游戏黑洞救星</div>
+        <div class="grp">核 心</div>
         <div class="row"><span class="lbl">无敌模式</span><div class="sw on" id="god"></div></div>
         <div class="desc">血量不会被打到 0，受到致命伤自动回满</div>
         <div class="row"><span class="lbl">一击清怪</span><div class="sw" id="os"></div></div>
@@ -219,6 +247,7 @@
           <b class="on" data-m="1">1x</b><b data-m="5">5x</b><b data-m="20">20x</b><b data-m="100">100x</b>
         </div></div>
         <div class="desc">你对敌人的每次伤害 ×倍数，普攻/技能/灼烧中毒全生效</div>
+        <div class="grp">效 率</div>
         <div class="row"><span class="lbl">敌人速度</span><div class="chips" id="schips">
           <b class="on" data-s="1">关</b><b data-s="0.5">50%</b><b data-s="0.1">10%</b><b data-s="0">定身</b>
         </div></div>
@@ -229,8 +258,9 @@
         <div class="desc">升级弹窗自动选卡，优先高稀有度，挂机全自动</div>
         <div class="row"><span class="lbl">自动捕捉</span><div class="sw" id="ac"></div></div>
         <div class="desc">可捕捉的传说敌人倒地虚弱后自动投球收入队</div>
-        <button class="wipe" id="wipe">一键清屏</button>
+        <button class="wipe" id="wipe">⚡ 一键清屏</button>
         <div class="desc">立即清空当前场上所有敌人（配合自动攻击瞬间清场）</div>
+        <div class="grp">数 据</div>
         <div class="st" id="st">状态：连接中…</div>
         <div class="stats" id="stats">统计：进入对局后显示</div>
       </div>`;
