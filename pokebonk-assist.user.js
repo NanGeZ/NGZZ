@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokéBonk 辅助（黑洞救星）
 // @namespace    http://tampermonkey.net/
-// @version      3.0.0
+// @version      3.0.1
 // @description  PokéBonk 一键辅助：无敌模式、一击清怪、伤害倍率（1x-100x）、一键清屏、敌人减速/定身、经验磁铁、自动选技能、自动捕捉、实时统计面板，抗游戏更新（方法名混淆自适应），面板内含各功能效果说明
 // @match        https://pokebonk.com/*
 // @grant        none
@@ -9,7 +9,7 @@
 // @noframes
 // ==/UserScript==
 /*
- * PokéBonk 辅助 v3.0（游戏黑洞救星）—— 抗更新健壮版
+ * PokéBonk 辅助 v3.0.1（游戏黑洞救星）—— 抗更新健壮版
  * ============================================================
  * 背景：游戏每次更新会重新混淆「方法名」（takeHp→$suqtxh、kill→$1fi5xi4…
  *   …），但「属性名」始终稳定（hp / speed / pickups / capture / stats /
@@ -274,16 +274,18 @@
       toast(S.slow === 0 ? '敌人已定身' : S.slow === 1 ? '敌人速度：正常' : `敌人速度 ×${S.slow}`);
     });
 
-    // 自动选技能：升级弹窗是 DOM（.cards 容器内为技能卡片），点第一张/最高稀有度
+    // 自动选技能：只点升级弹窗专属的 button.card.offer（全包唯一来源，商店/放生/
+    // 交易等其它弹窗的 .cards 卡片绝不会被误点），优先点有闪光样式的高稀有度卡
+    const clicked = new WeakSet();
     setInterval(() => {
       if (!S.autoPick) return;
-      const cards = document.querySelector('.cards');
-      if (!cards || !cards.children.length) return;
-      const kids = Array.from(cards.children);
-      const pick = kids.find(c => /rare|epic|legend|mythic/i.test(c.className)) || kids[0];
-      const btn = pick.tagName === 'BUTTON' ? pick : pick.querySelector('button') || pick;
-      try { btn.click(); } catch (e) {}
-    }, 400);
+      const cards = [...document.querySelectorAll('.cards button.card.offer')];
+      const pick = cards.find(c => !clicked.has(c) && c.style.getPropertyValue('--shine'))
+                || cards.find(c => !clicked.has(c));
+      if (!pick) return;
+      clicked.add(pick);
+      try { pick.click(); } catch (e) {}
+    }, 450);
 
     // 状态 + 实时统计（500ms 刷新；DPS 按 run.time 秒数滑动采样）
     let lastT = 0, lastD = 0;
