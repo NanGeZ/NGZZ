@@ -1,0 +1,30 @@
+=== private void installCreatorHook() { ===
+
+private void installCreatorHook() {
+try {
+m84(this, PackageInfo.class);
+int i = 1616;
+} else if (i == 49) {
+}
+}
+} catch (Throwable unused) {
+}
+try {
+m84(this, ApplicationInfo.class);
+} else if (i2 == 54) {
+}
+}
+} catch (Throwable unused2) {
+}
+m52("installCreatorHook: done");
+int m188 = C0002.m188();
+} else {
+return;
+}
+return;
+} else if (i3 != 47483) {
+}
+}
+}
+}
+

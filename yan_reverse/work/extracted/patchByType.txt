@@ -1,0 +1,28 @@
+=== private void patchByType(Object obj) { ===
+
+private void patchByType(Object obj) {
+boolean z = obj instanceof PackageInfo;
+int i = 1616;
+m32(this, (PackageInfo) obj);
+} else if (i2 == 54) {
+return;
+}
+}
+} else if (i == 239) {
+boolean z2 = obj instanceof ApplicationInfo;
+} else {
+return;
+}
+m87(this, (ApplicationInfo) obj);
+return;
+} else if (i3 != 47483) {
+}
+}
+}
+}
+} else if (z) {
+}
+}
+}
+}
+

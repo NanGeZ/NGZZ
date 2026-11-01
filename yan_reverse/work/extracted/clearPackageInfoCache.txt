@@ -1,0 +1,188 @@
+=== private static void clearPackageInfoCache() { ===
+
+private static void clearPackageInfoCache() {
+String m53 = m53();
+String m5 = m5();
+int i = 0;
+return;
+}
+}
+} else if (i >= 2) {
+}
+}
+}
+}
+i += C0000.f4 ^ 86;
+} else if (i3 != 1711) {
+}
+}
+}
+
+/* JADX WARN: Code restructure failed: missing block: B:100:0x00bc, code lost:
+
+r4 = 48922;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:122:0x00cd, code lost:
+
+com.yan.hook.C0002.m205(r8, new java.lang.Object[]{android.content.pm.PackageInfo.class, android.content.pm.ApplicationInfo.class}[r9]);
+*/
+/* JADX WARN: Code restructure failed: missing block: B:123:0x00d0, code lost:
+
+r11 = 49666;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:124:0x00d3, code lost:
+
+r11 = r11 ^ 49683;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:125:0x00d7, code lost:
+
+if (r11 == 17) goto L152;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:127:0x00de, code lost:
+
+r11 = 49697;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:132:0x00db, code lost:
+
+if (r11 == 50) goto L153;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:22:0x0033, code lost:
+
+r4 = new java.lang.String[]{r0, r1}[r3];
+*/
+/* JADX WARN: Code restructure failed: missing block: B:24:0x0039, code lost:
+
+r8 = m51(android.os.Parcel.class, r4);
+r9 = 1740;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:25:0x0041, code lost:
+
+r9 = r9 ^ 1757;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:26:0x0045, code lost:
+
+if (r9 == 17) goto L106;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:28:0x010c, code lost:
+
+if (r8 == null) goto L112;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:30:0x010e, code lost:
+
+r9 = 1833;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:34:0x0112, code lost:
+
+r9 = 1802;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:38:0x0049, code lost:
+
+if (r9 == 54) goto L107;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:42:0x004d, code lost:
+
+if (r9 == 471) goto L108;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:44:0x0051, code lost:
+
+if (r9 == 500) goto L105;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:48:0x0054, code lost:
+
+r8 = m78(r8);
+r9 = r8 instanceof java.util.Map;
+r11 = 1864;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:49:0x005c, code lost:
+
+r11 = r11 ^ 1881;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:50:0x005e, code lost:
+
+if (r11 == 17) goto L120;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:52:0x0100, code lost:
+
+if (r9 == false) goto L123;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:54:0x0102, code lost:
+
+r11 = 48736;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:58:0x0107, code lost:
+
+r11 = 48705;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:62:0x0063, code lost:
+
+if (r11 == 47384) goto L117;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:64:0x0068, code lost:
+
+if (r11 == 47417) goto L118;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:66:0x006d, code lost:
+
+if (r11 == 47483) goto L119;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:72:0x0070, code lost:
+
+r8 = (java.util.Map) r8;
+r9 = 0;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:73:0x0073, code lost:
+
+r11 = 48767;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:74:0x0076, code lost:
+
+r11 = r11 ^ 48784;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:75:0x007a, code lost:
+
+if (r11 == 14) goto L132;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:77:0x007e, code lost:
+
+if (r11 == 45) goto L133;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:79:0x0082, code lost:
+
+if (r11 == 76) goto L129;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:80:0x0084, code lost:
+
+if (r11 == 239) goto L131;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:82:0x0087, code lost:
+
+if (r9 < 2) goto L135;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:84:0x00fb, code lost:
+
+r11 = 48829;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:88:0x0089, code lost:
+
+r11 = 48860;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:94:0x008d, code lost:
+
+m52(org.lsposed.hiddenapibypass.library.C0003.m281(org.lsposed.hiddenapibypass.library.C0004.m336(new java.lang.StringBuilder(com.yan.hook.C0002.m204("clearParcelCreators(selective): ")), r4)));
+r4 = 48891;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:95:0x00af, code lost:
+
+r4 = r4 ^ 48908;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:96:0x00b5, code lost:
+
+if (r4 == 22) goto L141;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:98:0x00b9, code lost:
+
+if (r4 == 503) goto L142;
+*/
+/*
+Code decompiled incorrectly, please refer to instructions dump.
+*/

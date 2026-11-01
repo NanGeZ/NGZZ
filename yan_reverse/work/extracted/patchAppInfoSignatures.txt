@@ -1,0 +1,46 @@
+=== private void patchAppInfoSignatures(ApplicationInfo applicationInfo) { ===
+
+private void patchAppInfoSignatures(ApplicationInfo applicationInfo) {
+int i = 1616;
+int m143 = C0001.m143();
+} else if (i2 != 54) {
+return;
+}
+return;
+}
+}
+}
+} else if (i == 239) {
+try {
+Field m65 = m65();
+} else if (i3 == 47384) {
+Field m51 = m51(ApplicationInfo.class, C0002."signatures");
+return;
+}
+m15(applicationInfo, m51, m25(this));
+return;
+}
+}
+}
+} else if (i4 == 239) {
+if (m51 != null) {
+}
+}
+}
+}
+} else if (i3 == 47417) {
+m15(applicationInfo, m65(), m25(this));
+return;
+} else if (i3 != 47483) {
+}
+}
+} catch (Throwable unused) {
+return;
+}
+}
+} else if (applicationInfo == null) {
+}
+}
+}
+}
+

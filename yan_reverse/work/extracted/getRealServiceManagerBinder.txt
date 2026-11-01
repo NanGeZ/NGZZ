@@ -1,0 +1,147 @@
+=== private static IBinder getRealServiceManagerBinder() { ===
+
+private static IBinder getRealServiceManagerBinder() {
+try {
+Object m78 = m78(m51(C0004.m342(m99()), "sServiceManager"));
+int i = 1616;
+}
+return null;
+}
+} else if (m78 != null) {
+}
+}
+}
+} catch (Throwable unused) {
+return null;
+}
+}
+
+/* JADX WARN: Code restructure failed: missing block: B:160:0x01e9, code lost:
+
+r2 = 50813;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:161:0x01ec, code lost:
+
+r2 = r2 ^ 50830;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:162:0x01f0, code lost:
+
+if (r2 == 18) goto L222;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:164:0x01f4, code lost:
+
+if (r2 == 53) goto L223;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:166:0x01f8, code lost:
+
+if (r2 == 243) goto L224;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:168:0x0209, code lost:
+
+if (r12 == r3) goto L227;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:170:0x0229, code lost:
+
+r2 = 50875;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:174:0x020b, code lost:
+
+r2 = 51557;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:178:0x01fc, code lost:
+
+if (r2 == 4075) goto L225;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:180:0x01ff, code lost:
+
+r2 = com.yan.hook.C0001.f5;
+r10[r13] = r7[r12];
+r13 = r13 + (r2 ^ (-580));
+*/
+/* JADX WARN: Code restructure failed: missing block: B:181:0x020f, code lost:
+
+r2 = r13;
+r4 = (com.yan.hook.C0000.f4 ^ 86) + r12;
+r5 = 51588;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:182:0x0218, code lost:
+
+r5 = r5 ^ 51605;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:183:0x021c, code lost:
+
+if (r5 == 17) goto L233;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:185:0x0225, code lost:
+
+r5 = 51619;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:189:0x021e, code lost:
+
+if (r5 == 54) goto L234;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:199:0x0139, code lost:
+
+r10 = m82(org.lsposed.hiddenapibypass.library.C0003.m283(r6, r7[r12]));
+r13 = 49666;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:200:0x0146, code lost:
+
+r13 = r13 ^ 49683;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:201:0x014b, code lost:
+
+if (r13 == 17) goto L130;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:202:0x014d, code lost:
+
+if (r13 == 50) goto L132;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:203:0x014f, code lost:
+
+if (r13 == 76) goto L172;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:205:0x0153, code lost:
+
+if (r13 == 83) goto L239;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:207:0x0158, code lost:
+
+r12 = r12 + (com.yan.hook.C0002.f6 ^ (-481));
+r4 = 51712;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:208:0x0160, code lost:
+
+r4 = r4 ^ 51729;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:209:0x0164, code lost:
+
+if (r4 == 14) goto L243;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:210:0x0166, code lost:
+
+if (r4 == 17) goto L244;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:212:0x0169, code lost:
+
+r4 = 51743;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:221:0x0170, code lost:
+
+r4 = r12;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:222:0x0245, code lost:
+
+r13 = 49728;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:224:0x023e, code lost:
+
+if (r10 == false) goto L132;
+*/
+/* JADX WARN: Code restructure failed: missing block: B:225:0x0240, code lost:
+
+r13 = 49759;
+*/
+/*
+Code decompiled incorrectly, please refer to instructions dump.
+*/

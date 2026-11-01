@@ -1,0 +1,27 @@
+=== private void replaceCreator(Class<?> cls) throws Exception { ===
+
+private void replaceCreator(Class<?> cls) throws Exception {
+Field m51 = m51(cls, C0003."CREATOR");
+int i = 1616;
+return;
+}
+Object m78 = m78(m51);
+} else if (i2 != 54) {
+m14(m51, C0001.m185(new FakeClassLoader(), new Class[]{C0004.m342(m56())}, new InvocationHandler(this, m78) { // from class: com.yan.hook.PmsHookProvider.1
+final PmsHookProvider this$0;
+private final Object val$orig;
+
+this.this$0 = this;
+this.val$orig = m78;
+int m274 = C0003.m274();
+return;
+} else if (i3 == 239) {
+return;
+}
+} else if (m274 <= 0) {
+}
+}
+}
+}
+
+/* renamed from: ۣ۠۟۟, reason: not valid java name and contains not printable characters */

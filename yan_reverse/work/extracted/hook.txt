@@ -1,0 +1,62 @@
+=== private void hook(Context context) throws Exception { ===
+
+private void hook(Context context) throws Exception {
+m43();
+m85();
+m70();
+m96(this);
+Object m293 = C0003.m293(C0002.m192(C0004.m342(m30()), "currentActivityThread", new Class[0]), null, new Object[0]);
+IBinder m168 = C0001.m168(C0003."package");
+m52(C0003.m281(C0001.m173(new StringBuilder(C0004."hook: real="), m168)));
+int i = 1616;
+FakeBinder fakeBinder = new FakeBinder(this, m168);
+m79(fakeBinder);
+try {
+m62(m37(m293, "sPackageManager"), fakeBinder);
+m62(m37(C0001.m159(context), C0004."mPM"), fakeBinder);
+} else if (i2 == 54) {
+}
+}
+} catch (Throwable unused) {
+}
+m60(this, fakeBinder);
+} else if (i == 239) {
+}
+} else if (m168 != null) {
+}
+}
+}
+m100();
+try {
+ApplicationInfo m297 = C0003.m297(context);
+} else if (i3 != 47384) {
+} else if (i3 != 47483) {
+}
+} else {
+}
+}
+} catch (Throwable unused2) {
+}
+try {
+Object m37 = m37(m293, "mInitialApplication");
+boolean z = m37 instanceof Application;
+}
+}
+} else if (z) {
+}
+}
+}
+} catch (Throwable unused3) {
+}
+m91();
+m52(C0002."hook done");
+int m274 = C0003.m274();
+} else if (i5 != 1711) {
+return;
+}
+return;
+}
+}
+}
+}
+

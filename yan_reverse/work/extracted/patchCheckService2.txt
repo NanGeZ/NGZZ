@@ -1,0 +1,56 @@
+=== private static void patchCheckService2(Parcel parcel) throws Exception { ===
+
+private static void patchCheckService2(Parcel parcel) throws Exception {
+C0004.m325(parcel, 0);
+int m337 = C0004.m337(parcel);
+int i = 1616;
+Class m342 = C0004.m342(m44());
+Object m229 = C0002.m229(parcel, (Parcelable.Creator) m78(m51(m342, C0001."CREATOR")));
+} else if (i2 != 54) {
+Object m47 = m47(m229, m51(m342, C0003."_value"));
+m52("patchCheckService2: _value null (tag?)");
+}
+m15(m47, m51(C0003.m271(m47), C0002."service"), m11());
+} else if (i4 == 503) {
+}
+}
+} else if (i3 == 239) {
+if (m47 != null) {
+}
+}
+}
+}
+Parcel m299 = C0003.m299();
+try {
+C0002.m222(m299);
+C0003.m261(m299, (Parcelable) m229, 0);
+C0004.m325(parcel, 0);
+C0002.m202(parcel, 0);
+C0004.m345(parcel, m299, 0, C0004.m335(m299));
+C0004.m325(parcel, 0);
+return;
+} finally {
+C0003.m290(m299);
+}
+}
+}
+}
+}
+} else if (i == 239) {
+}
+} else if (m337 == 0) {
+}
+}
+}
+C0004.m325(parcel, 0);
+int m188 = C0002.m188();
+} else {
+return;
+}
+return;
+} else if (i5 != 47483) {
+}
+}
+}
+}
+

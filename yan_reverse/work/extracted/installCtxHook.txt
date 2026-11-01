@@ -1,0 +1,39 @@
+=== private void installCtxHook(IBinder iBinder) { ===
+
+private void installCtxHook(IBinder iBinder) {
+boolean z;
+try {
+g_smFake = iBinder;
+g_realSM = m86();
+StringBuilder m336 = C0004.m336(C0001.m173(new StringBuilder(C0002.m204("installCtxHook(prepare): realSM=")), m45()), C0002." fake=");
+int i = 1616;
+} else if (i2 == 54) {
+}
+}
+z = true;
+} else if (i == 239) {
+z = false;
+}
+} else if (iBinder != null) {
+}
+}
+}
+m52(C0003.m281(C0003.m301(m336, z)));
+} else if (i3 == 47483) {
+}
+}
+} catch (Throwable th) {
+m9("installCtxHook failed", th);
+}
+int m143 = C0001.m143();
+return;
+}
+return;
+} else if (i4 == 239) {
+if (m143 <= 0) {
+}
+}
+}
+}
+}
+

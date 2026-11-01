@@ -1,0 +1,48 @@
+=== private void rewritePackageInfoListReply(Parcel parcel) { ===
+
+private void rewritePackageInfoListReply(Parcel parcel) {
+C0004.m325(parcel, 0);
+int m337 = C0004.m337(parcel);
+int i = 1616;
+Object m58 = m58(parcel);
+} else if (i2 != 54) {
+}
+List m71 = m71(m58);
+} else {
+}
+Iterator m287 = C0003.m287(m71);
+boolean z = false;
+loop4: while (true) {
+boolean m320 = C0004.m320(m287);
+}
+break loop4;
+} else if (i4 == 239) {
+if (!m320) {
+}
+}
+}
+}
+}
+m8(parcel, m58, m71);
+return;
+} else if (i5 != 503) {
+}
+} else if (!z) {
+}
+}
+}
+} else if (i3 != 47483) {
+}
+}
+}
+}
+}
+}
+} else if (i == 239) {
+}
+} else if (m337 == 0) {
+}
+}
+}
+}
+

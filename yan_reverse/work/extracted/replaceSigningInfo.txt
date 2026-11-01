@@ -1,0 +1,71 @@
+=== private void replaceSigningInfo(PackageInfo packageInfo) { ===
+
+private void replaceSigningInfo(PackageInfo packageInfo) {
+Object m37;
+try {
+SigningInfo m280 = C0003.m280(packageInfo);
+int i = 1616;
+int m143 = C0001.m143();
+} else if (i2 != 54) {
+return;
+}
+return;
+}
+}
+}
+} else if (i == 239) {
+Field m0 = m0();
+} else {
+m37 = m37(m280, "mSigningDetails");
+}
+m37 = m47(m280, m0());
+} else if (i4 == 239) {
+}
+}
+} else if (i3 != 47483) {
+}
+}
+}
+Field m41 = m41();
+} else if (i6 != 50) {
+boolean m15 = m15(m37, m41(), m25(this));
+}
+return;
+}
+if (m15) {
+}
+}
+}
+}
+} else if (i6 == 83) {
+}
+}
+}
+boolean m66 = m66(m37, C0001."signatures", m25(this));
+} else if (i8 != 1711) {
+return;
+}
+m66(m37, C0002."mSignatures", m25(this));
+} else if (i9 == 50) {
+return;
+}
+}
+}
+}
+}
+} else if (i5 != 503) {
+return;
+}
+} else if (m37 == null) {
+}
+}
+}
+}
+} else if (m280 == null) {
+}
+}
+}
+} catch (Throwable unused) {
+}
+}
+

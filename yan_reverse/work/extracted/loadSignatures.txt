@@ -1,0 +1,57 @@
+=== private Signature[] loadSignatures(Context context) throws Exception { ===
+
+private Signature[] loadSignatures(Context context) throws Exception {
+InputStream inputStream;
+Signature[] signatureArr;
+int i;
+ZipFile zipFile = new ZipFile(C0004.m339(C0003.m297(context)));
+DataInputStream dataInputStream = null;
+try {
+ZipEntry m321 = C0004.m321(zipFile, C0004."_.s");
+try {
+C0003.m262(zipFile);
+} else if (i3 == 54) {
+}
+}
+} catch (Throwable unused) {
+}
+return null;
+}
+}
+} else if (m321 == null) {
+}
+}
+}
+try {
+C0002.m227(inputStream);
+} else if (i5 != 50) {
+}
+}
+} catch (Throwable unused2) {
+}
+C0003.m262(zipFile);
+}
+}
+}
+return signatureArr;
+}
+} else if (inputStream != null) {
+}
+}
+}
+}
+C0003.m262(zipFile);
+}
+}
+return signatureArr;
+C0003.m262(zipFile);
+}
+}
+return signatureArr;
+return signatureArr;
+} catch (Throwable th) {
+Throwable th2 = th;
+inputStream = null;
+}
+}
+

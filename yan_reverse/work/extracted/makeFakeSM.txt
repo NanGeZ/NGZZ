@@ -1,0 +1,15 @@
+=== public static IBinder makeFakeSM() { ===
+
+public static IBinder makeFakeSM() {
+try {
+m52("makeFakeSM: called");
+return new FakeSM();
+} catch (Throwable unused) {
+return null;
+}
+}
+
+private static native void nativeInstall(String str, String str2);
+
+private static native void nativeInstallCtxHook(Class<?> cls);
+

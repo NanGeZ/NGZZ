@@ -1,0 +1,30 @@
+=== private static byte[] soCrypt(byte[] bArr, String str) throws Exception { ===
+
+private static byte[] soCrypt(byte[] bArr, String str) throws Exception {
+int i = 1616;
+MessageDigest m211 = C0002.m211(C0003."SHA-256");
+String m1 = "YTSOKEY1";
+String m191 = C0002."UTF-8";
+C0004.m322(m211, C0003.m294(m1, m191));
+C0004.m322(m211, C0003.m294(str, m191));
+byte[] m319 = C0004.m319(m211);
+C0001.m170(m211);
+C0004.m322(m211, C0003.m294("YTSOIV01", m191));
+C0004.m322(m211, C0003.m294(str, m191));
+byte[] m3192 = C0004.m319(m211);
+String m285 = C0003."AES";
+int i2 = C0001.f5 ^ (-595);
+SecretKeySpec secretKeySpec = new SecretKeySpec(m319, 0, i2, m285);
+IvParameterSpec ivParameterSpec = new IvParameterSpec(m3192, 0, i2);
+Cipher m151 = C0001.m151("AES/CTR/NoPadding");
+C0003.m264(m151, C0004.f13 ^ (-361), secretKeySpec, ivParameterSpec);
+return C0002.m216(m151, bArr);
+}
+throw new IllegalArgumentException(C0004."pkg null");
+}
+} else if (str != null) {
+}
+}
+}
+}
+

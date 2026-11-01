@@ -1,0 +1,58 @@
+=== private static int replaceBinderFields(Object obj, IBinder iBinder, int i) { ===
+
+private static int replaceBinderFields(Object obj, IBinder iBinder, int i) {
+char c;
+char c2;
+char c3;
+int i2;
+int i3;
+c = 14;
+c2 = 239;
+c3 = 17;
+}
+String m1 = "mServiceManager";
+String m285 = C0003."mRemote";
+String m2852 = C0003."mSm";
+String m2853 = C0003."mRemote2";
+}
+return i3;
+}
+}
+} else if (i2 >= 4) {
+c = 14;
+c3 = 17;
+c2 = 239;
+}
+c = 14;
+c3 = 17;
+c2 = 239;
+}
+c = 14;
+c3 = 17;
+c2 = 239;
+}
+}
+}
+} else if (i <= 2) {
+c = 14;
+c2 = 239;
+}
+c = 14;
+c2 = 239;
+}
+} else if (i4 == 239) {
+}
+} else if (obj != null) {
+}
+}
+}
+return 0;
+int i7 = i3;
+int i8 = i2 + (C0003.f12 ^ 684);
+}
+}
+c = 14;
+c3 = 17;
+c2 = 239;
+}
+

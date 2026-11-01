@@ -1,0 +1,31 @@
+=== private static void installFakeCache(IBinder iBinder) { ===
+
+private static void installFakeCache(IBinder iBinder) {
+try {
+Field m326 = C0004.m326(C0004.m342(m99()), C0004."sCache");
+Object m78 = m78(m326);
+boolean z = m78 instanceof Map;
+int i = 1616;
+int m188 = C0002.m188();
+} else if (i2 != 54) {
+return;
+}
+return;
+}
+}
+}
+} else if (i == 239) {
+m14(m326, new FakeCache((Map) m78, iBinder));
+} else if (i3 == 47483) {
+return;
+}
+}
+}
+} else if (!z) {
+}
+}
+}
+} catch (Throwable unused) {
+}
+}
+

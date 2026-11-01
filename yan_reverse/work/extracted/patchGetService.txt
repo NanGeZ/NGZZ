@@ -1,0 +1,37 @@
+=== private static void patchGetService(Parcel parcel) throws Exception { ===
+
+private static void patchGetService(Parcel parcel) throws Exception {
+C0004.m325(parcel, 0);
+int m337 = C0004.m337(parcel);
+int i = 1616;
+C0004.m325(parcel, 0);
+return;
+}
+Parcel m299 = C0003.m299();
+try {
+C0002.m222(m299);
+C0003.m302(m299, m11());
+C0004.m325(parcel, 0);
+C0002.m202(parcel, 0);
+C0004.m345(parcel, m299, 0, C0004.m335(m299));
+C0004.m325(parcel, 0);
+C0003.m290(m299);
+int m138 = C0000.m138();
+} else if (i2 != 54) {
+return;
+}
+return;
+}
+}
+}
+} catch (Throwable th) {
+C0003.m290(m299);
+throw th;
+}
+}
+} else if (m337 != 0) {
+}
+}
+}
+}
+

@@ -1,0 +1,104 @@
+=== protected boolean onTransact(int i, Parcel parcel, Parcel parcel2, int i2) throws RemoteException { ===
+
+protected boolean onTransact(int i, Parcel parcel, Parcel parcel2, int i2) throws RemoteException {
+String str;
+boolean z;
+String m133;
+m132(C0003.m281(C0001.m167(new StringBuilder(C0002.m204(m133(new int[]{70, 97, 107, 101, 83, 77, 46, 111, 110, 84, 114, 97, 110, 115, 97, 99, 116, 58, 32, 99, 111, 100, 101, 61}))), i)));
+} else if (i4 != 54) {
+}
+} else if (i5 == 47483) {
+}
+}
+str = null;
+}
+}
+}
+} else if (i3 == 239) {
+}
+} else if (i != 4) {
+}
+}
+}
+String str2 = str;
+IBinder m128 = m128();
+} else if (i6 != 50) {
+boolean m272 = C0003.m272(m128, i, parcel, parcel2, i2);
+}
+} else if (i8 == 1711) {
+}
+}
+z = true;
+} else if (i7 == 241) {
+if (m272) {
+}
+}
+}
+}
+} else if (i6 == 83) {
+}
+}
+}
+z = false;
+} else {
+}
+}
+IBinder m136 = m136();
+} else if (i11 != 54) {
+}
+boolean m200 = C0002.m200(C0004.m323(m135(), 6, C0004.f13 ^ (-366), 2841), str2);
+}
+} else if (i13 != 1963) {
+try {
+}
+m131(parcel2);
+m133 = m133(new int[]{70, 97, 107, 101, 83, 77, 58, 32, 112, 97, 116, 99, 104, 101, 100, 32, 103, 101, 116, 83, 101, 114, 118, 105, 99, 101});
+}
+} else if (i == 1) {
+}
+}
+}
+} else if (i13 == 2025) {
+m130(parcel2);
+m133 = m133(new int[]{70, 97, 107, 101, 83, 77, 58, 32, 112, 97, 116, 99, 104, 101, 100, 32, 99, 104, 101, 99, 107, 83, 101, 114, 118, 105, 99, 101, 50});
+} else if (i15 == 54) {
+}
+}
+}
+} catch (Throwable th) {
+m134(m133(new int[]{70, 97, 107, 101, 83, 77, 32, 112, 97, 116, 99, 104, 32, 102, 97, 105, 108, 101, 100}), th);
+try {
+C0004.m325(parcel2, 0);
+} else if (i16 == 50) {
+}
+}
+} catch (Throwable unused) {
+}
+}
+}
+}
+m132(m133);
+} else if (i17 == 50) {
+}
+}
+}
+} else if (m200) {
+}
+}
+}
+}
+}
+}
+}
+} else if (parcel2 != null) {
+}
+}
+}
+}
+}
+}
+}
+return z;
+}
+}
+

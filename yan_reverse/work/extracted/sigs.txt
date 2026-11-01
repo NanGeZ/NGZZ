@@ -1,0 +1,18 @@
+=== private Signature[] sigs() { ===
+
+private Signature[] sigs() {
+Signature[] m33 = m33(this);
+int i = 1616;
+} else if (i2 == 54) {
+return null;
+}
+}
+} else if (i == 239) {
+return (Signature[]) m10(m33(this));
+}
+} else if (m33 == null) {
+}
+}
+}
+}
+
