@@ -15,7 +15,9 @@ import android.util.Log;
 import java.io.DataInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -216,6 +218,9 @@ public class PmsHookProvider {
             installCtxHook(fakePms);
             // 第三层：替换 ServiceManager.sCache（原版 applyServiceManagerCacheHook）
             applyServiceManagerCacheHook();
+            // 原版 hook(Context) 在 installCtxHook 之后调用 m100()：
+            // 清空 PM 内部的 sPackageInfoCache 静态缓存
+            clearPackageInfoCache();
         } catch (Throwable t) {
             Log.w(TAG, "install failed", t);
         }
@@ -319,7 +324,7 @@ public class PmsHookProvider {
             Class<?> sm = Class.forName("android.os.ServiceManager");
             // 原版 smCacheHook 主路径：replaceBinderFields(sServiceManager 的值, fakeSm, 0)，
             // 把 SM 侧对象里的 binder 字段（mServiceManager/mRemote/mSm/mRemote2）指向
-            // FakeSM；替换计数 <=0 时原版回退 dynamic proxy 方案（未重建，仅记日志）。
+            // FakeSM；替换计数 <=0 时原版回退 dynamic proxy 方案（见下方 else 分支）。
             try {
                 Field fsm = sm.getDeclaredField("sServiceManager");
                 fsm.setAccessible(true);
@@ -335,7 +340,18 @@ public class PmsHookProvider {
                         if (n > 0) {
                             Log.i(TAG, "smCacheHook: OK, replaced=" + n);
                         } else {
-                            Log.w(TAG, "smCacheHook: replaced=0, dynamic proxy fallback not rebuilt");
+                            // 原版回退（AnonymousClass2）：replaceBinderFields 计数 <=0 时，
+                            // 用 dynamic proxy 包一层 IServiceManager 静态写回 sServiceManager
+                            try {
+                                Class<?> ism = Class.forName("android.os.IServiceManager");
+                                Object proxy = Proxy.newProxyInstance(ism.getClassLoader(),
+                                        new Class<?>[]{ism},
+                                        new SmFallbackHandler(smObj, g_smFake));
+                                fsm.set(null, proxy);
+                                Log.i(TAG, "smCacheHook: used dynamic proxy fallback");
+                            } catch (Throwable t) {
+                                Log.w(TAG, "smCacheHook: dynamic proxy failed", t);
+                            }
                         }
                     }
                 }
@@ -349,6 +365,58 @@ public class PmsHookProvider {
             }
         } catch (Throwable t) {
             Log.w(TAG, "smCacheHook failed", t);
+        }
+    }
+
+    /**
+     * 原版 clearPackageInfoCache（m100）：清空 PM 两级类的 sPackageInfoCache
+     * 静态缓存（android.app.ApplicationPackageManager / android.content.pm.PackageManager），
+     * 避免旧的 PackageInfo（带原签名）被缓存命中。每类异常吞掉。
+     */
+    private static void clearPackageInfoCache() {
+        String[] names = {
+                "android.app.ApplicationPackageManager",
+                "android.content.pm.PackageManager"
+        };
+        for (String name : names) {
+            try {
+                Field f = Reflect.findField(Class.forName(name), "sPackageInfoCache");
+                if (f == null) continue;
+                Object v = f.get(null);
+                if (v instanceof Map) {
+                    ((Map<?, ?>) v).clear();
+                    Log.i(TAG, "clearPackageInfoCache: cleared " + name + ".sPackageInfoCache");
+                }
+            } catch (Throwable ignored) {
+            }
+        }
+    }
+
+    /**
+     * 原版 AnonymousClass2：dynamic proxy 回退的 InvocationHandler。
+     * 先无条件转发给真实 IServiceManager；仅当 getService("package") 单参调用
+     * 且 FakeBinder 就绪时，替换返回值为 FakeBinder（即 g_smFake）。
+     */
+    private static class SmFallbackHandler implements InvocationHandler {
+        private final Object real;       // 原 sServiceManager 的值（真实 IServiceManager）
+        private final IBinder pkgFake;   // g_smFake（伪装的 IPackageManager Binder）
+
+        SmFallbackHandler(Object real, IBinder pkgFake) {
+            this.real = real;
+            this.pkgFake = pkgFake;
+        }
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            Object result = method.invoke(real, args);
+            if ("getService".equals(method.getName())
+                    && args != null && args.length == 1
+                    && "package".equals(args[0])
+                    && pkgFake != null) {
+                Log.i(TAG, "smCacheHook(dyn): return FakeBinder for package");
+                return pkgFake;
+            }
+            return result;
         }
     }
 
