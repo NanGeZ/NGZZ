@@ -111,7 +111,7 @@ public class PmsHookProvider {
                 p.origSigs = sigs;
             }
             // 解析事务码 + 安装 ServiceManager hook
-            p.install();
+            p.install(context);
         } catch (Throwable t) {
             Log.w(TAG, "entry failed", t);
         }
@@ -195,11 +195,23 @@ public class PmsHookProvider {
     //   第三层 FakeCache  —— 替换 ServiceManager.sCache：缓存里 "package"
     //                        直接命中 FakeBinder
     // ========================================================================
-    private void install() {
+    private void install(Context context) {
         resolveTxCodes();
         try {
             // 第一层：伪装 IPackageManager（真实 PMS Binder 从 ServiceManager 取）
             IBinder fakePms = new FakeBinder(getRealPackageBinder());
+            // 原版 hook(Context)：把代理对象内部缓存的 IBinder 字段换成 FakeBinder，
+            // 即 bindFake(ActivityThread.sPackageManager 的值, fake) 与
+            //    bindFake(context.getPackageManager().mPM 的值, fake)
+            try {
+                Class<?> atCls = Class.forName("android.app.ActivityThread");
+                Method cur = atCls.getDeclaredMethod("currentActivityThread");
+                cur.setAccessible(true);
+                Object at = cur.invoke(null);
+                bindFake(Reflect.fieldValue(at, "sPackageManager"), fakePms);
+                bindFake(Reflect.fieldValue(context.getPackageManager(), "mPM"), fakePms);
+            } catch (Throwable unused) {
+            }
             // 记录 g_smFake / g_realSM（原版 installCtxHook）
             installCtxHook(fakePms);
             // 第三层：替换 ServiceManager.sCache（原版 applyServiceManagerCacheHook）
@@ -240,6 +252,63 @@ public class PmsHookProvider {
         g_realSM = getRealServiceManagerBinder();
     }
 
+    /**
+     * 原版 bindFake：把代理对象内部缓存的 IBinder 字段换成 fake binder。
+     * 按 mRemote / mBinder / mPM 三个名字在对象的类继承链（直到 Object.class）上
+     * 查找，找到「值是 IBinder」的字段即替换并返回；三个名字全部落空则记日志
+     * "bindFake: no mRemote on <类名>"。
+     */
+    private static void bindFake(Object obj, IBinder fake) {
+        if (obj == null) return;
+        String[] names = {"mRemote", "mBinder", "mPM"};
+        for (String name : names) {
+            Field f = Reflect.findField(obj.getClass(), name);
+            if (f == null) continue;
+            try {
+                if (f.get(obj) instanceof IBinder) {
+                    f.set(obj, fake);
+                    return;
+                }
+            } catch (Throwable ignored) {
+            }
+        }
+        Log.w(TAG, "bindFake: no mRemote on " + obj.getClass().getName());
+    }
+
+    /**
+     * 原版 replaceBinderFields：把 obj 内按 mServiceManager / mRemote / mSm / mRemote2
+     * 命名的 IBinder 字段替换成 fake binder；字段值不是 IBinder、但属于 android.os.*
+     * 类型时递归下钻替换（深度 +1，depth<=2 保护，字段值已是 fake 时跳过）。
+     * 返回替换计数（含递归）。
+     */
+    private static int replaceBinderFields(Object obj, IBinder fake, int depth) {
+        if (obj == null || depth > 2) return 0;
+        String[] names = {"mServiceManager", "mRemote", "mSm", "mRemote2"};
+        int count = 0;
+        for (String name : names) {
+            Field f = Reflect.findField(obj.getClass(), name);
+            if (f == null) continue;
+            try {
+                Object v = f.get(obj);
+                if (v == null || v == fake) continue;
+                if (v instanceof IBinder) {
+                    f.set(obj, fake);
+                    count++;
+                    Log.i(TAG, "smCacheHook: " + obj.getClass().getName() + " " + name + " -> fake");
+                } else if (v.getClass().getName().startsWith("android.os.")) {
+                    int n = replaceBinderFields(v, fake, depth + 1);
+                    if (n > 0) {
+                        Log.i(TAG, "smCacheHook: nested " + v.getClass().getName() + ": " + n);
+                        count += n;
+                    }
+                }
+            } catch (Throwable t) {
+                Log.w(TAG, "smCacheHook: set " + name + " failed", t);
+            }
+        }
+        return count;
+    }
+
     /** D4 接线：用 FakeCache 替换 ServiceManager.sCache（原版 applyServiceManagerCacheHook）。 */
     private void applyServiceManagerCacheHook() {
         try {
@@ -248,6 +317,30 @@ public class PmsHookProvider {
                 return;
             }
             Class<?> sm = Class.forName("android.os.ServiceManager");
+            // 原版 smCacheHook 主路径：replaceBinderFields(sServiceManager 的值, fakeSm, 0)，
+            // 把 SM 侧对象里的 binder 字段（mServiceManager/mRemote/mSm/mRemote2）指向
+            // FakeSM；替换计数 <=0 时原版回退 dynamic proxy 方案（未重建，仅记日志）。
+            try {
+                Field fsm = sm.getDeclaredField("sServiceManager");
+                fsm.setAccessible(true);
+                Object smObj = fsm.get(null);
+                if (smObj == null) {
+                    Log.w(TAG, "smCacheHook: sServiceManager null, skip");
+                } else {
+                    IBinder fakeSm = makeFakeSM();
+                    if (fakeSm == null) {
+                        Log.w(TAG, "smCacheHook: makeFakeSM null");
+                    } else {
+                        int n = replaceBinderFields(smObj, fakeSm, 0);
+                        if (n > 0) {
+                            Log.i(TAG, "smCacheHook: OK, replaced=" + n);
+                        } else {
+                            Log.w(TAG, "smCacheHook: replaced=0, dynamic proxy fallback not rebuilt");
+                        }
+                    }
+                }
+            } catch (Throwable unused) {
+            }
             Field f = sm.getDeclaredField("sCache");
             f.setAccessible(true);
             Object cur = f.get(null);
