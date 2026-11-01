@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="autofill">Otomatik doldurma</string>
+    <string name="close_drawer">Gezinme menüsünü kapat</string>
+    <string name="close_sheet">Sayfayı kapat</string>
+    <string name="default_error_message">Geçersiz giriş</string>
+    <string name="default_popup_window_title">Pop-up Pencere</string>
+    <string name="in_progress">Devam ediyor</string>
+    <string name="indeterminate">Kısmi olarak kontrol edildi</string>
+    <string name="m3c_bottom_sheet_collapse_description">Alt sayfayı daralt</string>
+    <string name="m3c_bottom_sheet_dismiss_description">Alt sayfayı kapat</string>
+    <string name="m3c_bottom_sheet_drag_handle_description">Sürükleme tutamacı</string>
+    <string name="m3c_bottom_sheet_expand_description">Alt sayfayı genişlet</string>
+    <string name="m3c_bottom_sheet_pane_title">Alt Sayfa</string>
+    <string name="m3c_dialog">Dialog</string>
+    <string name="m3c_snackbar_pane_title">Uyarı</string>
+    <string name="not_selected">Seçili değil</string>
+    <string name="range_end">Aralık sonu</string>
+    <string name="range_start">Aralık başlangıcı</string>
+    <string name="selected">Seçili</string>
+    <string name="state_empty">Boş</string>
+    <string name="state_off">Kapalı</string>
+    <string name="state_on">Açık</string>
+    <string name="switch_role">Anahtar</string>
+    <string name="tab">Sekme</string>
+    <string name="template_percent">Yüzde %1$d.</string>
+    <string name="tooltip_description">ipucu</string>
+    <string name="tooltip_label">ipucunu göster</string>
+</resources>

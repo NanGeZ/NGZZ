@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="autofill">ਆਟੋਫਿਲ</string>
+    <string name="close_drawer">ਨੈਵੀਗੇਸ਼ਨ ਮੀਨੂ ਬੰਦ ਕਰੋ</string>
+    <string name="close_sheet">ਸ਼ੀਟ ਬੰਦ ਕਰੋ</string>
+    <string name="default_error_message">ਅਵੈਧ ਇਨਪੁੱਟ</string>
+    <string name="default_popup_window_title">ਪੌਪ-ਅੱਪ ਵਿੰਡੋ</string>
+    <string name="in_progress">ਜਾਰੀ ਹੈ</string>
+    <string name="indeterminate">ਅੰਸ਼ਕ ਤੌਰ ਤੇ ਜਾਂਚ ਕੀਤੀ ਗਈ</string>
+    <string name="m3c_bottom_sheet_collapse_description">ਹੇਠਲੀ ਸ਼ੀਟ ਨੂੰ ਸਮੇਟੋ</string>
+    <string name="m3c_bottom_sheet_dismiss_description">ਹੇਠਲੀ ਸ਼ੀਟ ਨੂੰ ਖਾਰਜ ਕਰੋ</string>
+    <string name="m3c_bottom_sheet_drag_handle_description">ਘਸੀਟਣ ਵਾਲਾ ਹੈਂਡਲ</string>
+    <string name="m3c_bottom_sheet_expand_description">ਹੇਠਲੀ ਸ਼ੀਟ ਦਾ ਵਿਸਤਾਰ ਕਰੋ</string>
+    <string name="m3c_bottom_sheet_pane_title">ਹੇਠਲੀ ਸ਼ੀਟ</string>
+    <string name="m3c_dialog">ਡਾਇਲੌਗ</string>
+    <string name="m3c_snackbar_pane_title">ਅਲਰਟ</string>
+    <string name="not_selected">ਚੁਣੀ ਨਹੀਂ ਗਈ</string>
+    <string name="range_end">ਰੇਂਜ ਸਮਾਪਤ</string>
+    <string name="range_start">ਰੇਂਜ ਸ਼ੁਰੂ</string>
+    <string name="selected">ਚੁਣੀ ਗਈ</string>
+    <string name="state_empty">ਖਾਲੀ</string>
+    <string name="state_off">ਬੰਦ ਹੈ</string>
+    <string name="state_on">ਚਾਲੂ ਹੈ</string>
+    <string name="switch_role">ਸਵਿੱਚ ਕਰੋ</string>
+    <string name="tab">ਟੈਬ</string>
+    <string name="template_percent">%1$d ਫ਼ੀਸਦ।</string>
+    <string name="tooltip_description">ਟੂਲ-ਟਿੱਪ</string>
+    <string name="tooltip_label">ਟੂਲ-ਟਿੱਪ ਦਿਖਾਓ</string>
+</resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="autofill">ऑटोफिल</string>
+    <string name="close_drawer">नेव्हिगेशन मेनू बंद करा</string>
+    <string name="close_sheet">शीट बंद करा</string>
+    <string name="default_error_message">इनपुट चुकीचे आहे</string>
+    <string name="default_popup_window_title">पॉप-अप विंडो</string>
+    <string name="in_progress">प्रगतीपथावर आहे</string>
+    <string name="indeterminate">अंशतः तपासले</string>
+    <string name="m3c_bottom_sheet_collapse_description">तळाशी असलेली शीट कोलॅप्स करा</string>
+    <string name="m3c_bottom_sheet_dismiss_description">तळाशी असलेली शीट डिसमिस करा</string>
+    <string name="m3c_bottom_sheet_drag_handle_description">ड्रॅग हॅंडल</string>
+    <string name="m3c_bottom_sheet_expand_description">तळाशी असलेली शीट विस्तारीत करा</string>
+    <string name="m3c_bottom_sheet_pane_title">तळाशी असलेली शीट</string>
+    <string name="m3c_dialog">डायलॉग</string>
+    <string name="m3c_snackbar_pane_title">सूचना</string>
+    <string name="not_selected">निवडला नाही</string>
+    <string name="range_end">रेंजचा शेवट</string>
+    <string name="range_start">रेंजची सुरुवात</string>
+    <string name="selected">निवडला</string>
+    <string name="state_empty">रिक्त</string>
+    <string name="state_off">बंद आहे</string>
+    <string name="state_on">सुरू आहे</string>
+    <string name="switch_role">स्विच</string>
+    <string name="tab">टॅब</string>
+    <string name="template_percent">%1$d टक्के.</string>
+    <string name="tooltip_description">टूलटिप</string>
+    <string name="tooltip_label">टूलटिप दाखवा</string>
+</resources>

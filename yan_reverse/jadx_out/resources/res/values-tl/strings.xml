@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="autofill">Autofill</string>
+    <string name="close_drawer">Isara ang menu ng navigation</string>
+    <string name="close_sheet">Isara ang sheet</string>
+    <string name="default_error_message">Invalid na input</string>
+    <string name="default_popup_window_title">Window ng Pop-Up</string>
+    <string name="in_progress">Isinasagawa</string>
+    <string name="indeterminate">Bahagyang may check</string>
+    <string name="m3c_bottom_sheet_collapse_description">I-collapse ang bottom sheet</string>
+    <string name="m3c_bottom_sheet_dismiss_description">I-dismiss ang bottom sheet</string>
+    <string name="m3c_bottom_sheet_drag_handle_description">Handle sa pag-drag</string>
+    <string name="m3c_bottom_sheet_expand_description">Palawakin ang bottom sheet</string>
+    <string name="m3c_bottom_sheet_pane_title">Bottom Sheet</string>
+    <string name="m3c_dialog">Dialog</string>
+    <string name="m3c_snackbar_pane_title">Alerto</string>
+    <string name="not_selected">Hindi napili</string>
+    <string name="range_end">Katapusan ng range</string>
+    <string name="range_start">Simula ng range</string>
+    <string name="selected">Napili</string>
+    <string name="state_empty">Walang laman</string>
+    <string name="state_off">Naka-off</string>
+    <string name="state_on">Naka-on</string>
+    <string name="switch_role">Lumipat</string>
+    <string name="tab">Tab</string>
+    <string name="template_percent">%1$d (na) porsyento.</string>
+    <string name="tooltip_description">tooltip</string>
+    <string name="tooltip_label">ipakita ang tooltip</string>
+</resources>

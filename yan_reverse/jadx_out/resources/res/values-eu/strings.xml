@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="autofill">Betetze automatikoa</string>
+    <string name="close_drawer">Itxi nabigazio-menua</string>
+    <string name="close_sheet">Itxi orria</string>
+    <string name="default_error_message">Sarrerak ez du balio</string>
+    <string name="default_popup_window_title">Leiho gainerakorra</string>
+    <string name="in_progress">Abian</string>
+    <string name="indeterminate">Erdi-markatuta</string>
+    <string name="m3c_bottom_sheet_collapse_description">Tolestu pantailaren behealdean ainguratutako orria</string>
+    <string name="m3c_bottom_sheet_dismiss_description">Baztertu pantailaren behealdean ainguratutako orria</string>
+    <string name="m3c_bottom_sheet_drag_handle_description">Arrastatzeko kontrol-puntua</string>
+    <string name="m3c_bottom_sheet_expand_description">Zabaldu pantailaren behealdean ainguratutako orria</string>
+    <string name="m3c_bottom_sheet_pane_title">Pantailaren behealdean ainguratutako orria</string>
+    <string name="m3c_dialog">Leihoa</string>
+    <string name="m3c_snackbar_pane_title">Alerta</string>
+    <string name="not_selected">Hautatu gabe</string>
+    <string name="range_end">Barrutiaren amaiera</string>
+    <string name="range_start">Barrutiaren hasiera</string>
+    <string name="selected">Hautatuta</string>
+    <string name="state_empty">Hutsik</string>
+    <string name="state_off">Desaktibatuta</string>
+    <string name="state_on">Aktibatuta</string>
+    <string name="switch_role">Aldatu</string>
+    <string name="tab">Fitxa</string>
+    <string name="template_percent">Ehuneko %1$d.</string>
+    <string name="tooltip_description">aholkua</string>
+    <string name="tooltip_label">erakutsi aholkua</string>
+</resources>

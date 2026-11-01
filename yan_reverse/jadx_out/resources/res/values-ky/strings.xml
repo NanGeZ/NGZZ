@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="autofill">Автотолтуруу функиясы</string>
+    <string name="close_drawer">Чабыттоо менюсун жабуу</string>
+    <string name="close_sheet">Баракты жабуу</string>
+    <string name="default_error_message">Киргизилген маалымат жараксыз</string>
+    <string name="default_popup_window_title">Калкыма терезе</string>
+    <string name="in_progress">Аткарылууда</string>
+    <string name="indeterminate">Жарым-жартылай текшерилди</string>
+    <string name="m3c_bottom_sheet_collapse_description">Ылдыйкы экранды жыйыштыруу</string>
+    <string name="m3c_bottom_sheet_dismiss_description">Ылдыйкы экранды жабуу</string>
+    <string name="m3c_bottom_sheet_drag_handle_description">Сүйрөө маркери</string>
+    <string name="m3c_bottom_sheet_expand_description">Ылдыйкы экранды жайып көрсөтүү</string>
+    <string name="m3c_bottom_sheet_pane_title">Ылдыйкы экран</string>
+    <string name="m3c_dialog">Диалог</string>
+    <string name="m3c_snackbar_pane_title">Эскертүү</string>
+    <string name="not_selected">Тандалган жок</string>
+    <string name="range_end">Диапазондун аягы</string>
+    <string name="range_start">Диапазондун башы</string>
+    <string name="selected">Тандалды</string>
+    <string name="state_empty">Бош</string>
+    <string name="state_off">Өчүк</string>
+    <string name="state_on">Күйүк</string>
+    <string name="switch_role">Которгуч</string>
+    <string name="tab">Өтмөк</string>
+    <string name="template_percent">%1$d пайыз.</string>
+    <string name="tooltip_description">калкып чыгуучу кеңеш</string>
+    <string name="tooltip_label">калкып чыгуучу кеңешти көрсөтүү</string>
+</resources>

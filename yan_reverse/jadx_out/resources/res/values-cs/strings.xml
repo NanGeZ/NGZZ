@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="autofill">Automatické vyplňování</string>
+    <string name="close_drawer">Zavřít navigační panel</string>
+    <string name="close_sheet">Zavřít sešit</string>
+    <string name="default_error_message">Neplatný údaj</string>
+    <string name="default_popup_window_title">Vyskakovací okno</string>
+    <string name="in_progress">Probíhá</string>
+    <string name="indeterminate">Částečně zaškrtnuto</string>
+    <string name="m3c_bottom_sheet_collapse_description">Sbalit spodní panel</string>
+    <string name="m3c_bottom_sheet_dismiss_description">Zavřít spodní panel</string>
+    <string name="m3c_bottom_sheet_drag_handle_description">Úchyt pro přetažení</string>
+    <string name="m3c_bottom_sheet_expand_description">Rozbalit spodní panel</string>
+    <string name="m3c_bottom_sheet_pane_title">Spodní panel</string>
+    <string name="m3c_dialog">Dialogové okno</string>
+    <string name="m3c_snackbar_pane_title">Upozornění</string>
+    <string name="not_selected">Nevybráno</string>
+    <string name="range_end">Konec rozsahu</string>
+    <string name="range_start">Začátek rozsahu</string>
+    <string name="selected">Vybráno</string>
+    <string name="state_empty">Prázdné</string>
+    <string name="state_off">Vypnuto</string>
+    <string name="state_on">Zapnuto</string>
+    <string name="switch_role">Přepnout</string>
+    <string name="tab">Karta</string>
+    <string name="template_percent">%1$d procent.</string>
+    <string name="tooltip_description">popisek</string>
+    <string name="tooltip_label">zobrazit popisek</string>
+</resources>

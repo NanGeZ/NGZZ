@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="autofill">Заполнить автоматически</string>
+    <string name="close_drawer">Закрыть меню навигации</string>
+    <string name="close_sheet">Закрыть лист</string>
+    <string name="default_error_message">Неправильный ввод</string>
+    <string name="default_popup_window_title">Всплывающее окно</string>
+    <string name="in_progress">Выполняется</string>
+    <string name="indeterminate">Отмечено частично</string>
+    <string name="m3c_bottom_sheet_collapse_description">Свернуть нижний экран</string>
+    <string name="m3c_bottom_sheet_dismiss_description">Закрыть нижний экран</string>
+    <string name="m3c_bottom_sheet_drag_handle_description">Маркер перемещения</string>
+    <string name="m3c_bottom_sheet_expand_description">Развернуть нижний экран</string>
+    <string name="m3c_bottom_sheet_pane_title">Нижний экран</string>
+    <string name="m3c_dialog">Диалоговое окно</string>
+    <string name="m3c_snackbar_pane_title">Оповещение</string>
+    <string name="not_selected">Не выбрано</string>
+    <string name="range_end">Конец диапазона</string>
+    <string name="range_start">Начало диапазона</string>
+    <string name="selected">Выбрано</string>
+    <string name="state_empty">Пусто</string>
+    <string name="state_off">Отключено</string>
+    <string name="state_on">Включено</string>
+    <string name="switch_role">Переключатель</string>
+    <string name="tab">Вкладка</string>
+    <string name="template_percent">Процентов: %1$d.</string>
+    <string name="tooltip_description">Подсказка</string>
+    <string name="tooltip_label">Показать подсказку</string>
+</resources>

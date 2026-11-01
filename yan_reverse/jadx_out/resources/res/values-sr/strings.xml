@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="autofill">Аутоматско попуњавање</string>
+    <string name="close_drawer">Затвори мени за навигацију</string>
+    <string name="close_sheet">Затворите табелу</string>
+    <string name="default_error_message">Унос је неважећи</string>
+    <string name="default_popup_window_title">Искачући прозор</string>
+    <string name="in_progress">У току</string>
+    <string name="indeterminate">Делимично означено</string>
+    <string name="m3c_bottom_sheet_collapse_description">Скупите доњу табелу</string>
+    <string name="m3c_bottom_sheet_dismiss_description">Одбаците доњу табелу</string>
+    <string name="m3c_bottom_sheet_drag_handle_description">Идентификатор за превлачење</string>
+    <string name="m3c_bottom_sheet_expand_description">Проширите доњу табелу</string>
+    <string name="m3c_bottom_sheet_pane_title">Доња табела</string>
+    <string name="m3c_dialog">Дијалог</string>
+    <string name="m3c_snackbar_pane_title">Обавештење</string>
+    <string name="not_selected">Није изабрано</string>
+    <string name="range_end">Крај опсега</string>
+    <string name="range_start">Почетак опсега</string>
+    <string name="selected">Изабрано</string>
+    <string name="state_empty">Празно</string>
+    <string name="state_off">Искључено</string>
+    <string name="state_on">Укључено</string>
+    <string name="switch_role">Прекидач</string>
+    <string name="tab">Картица</string>
+    <string name="template_percent">%1$d посто.</string>
+    <string name="tooltip_description">објашњење</string>
+    <string name="tooltip_label">прикажи објашњење</string>
+</resources>

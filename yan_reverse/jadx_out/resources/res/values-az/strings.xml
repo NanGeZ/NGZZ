@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="autofill">Avto-doldurma</string>
+    <string name="close_drawer">Naviqasiya menyusunu bağlayın</string>
+    <string name="close_sheet">Səhifəni bağlayın</string>
+    <string name="default_error_message">Yanlış daxiletmə</string>
+    <string name="default_popup_window_title">Popap Pəncərəsi</string>
+    <string name="in_progress">Davam edir</string>
+    <string name="indeterminate">Qismən yoxlanıb</string>
+    <string name="m3c_bottom_sheet_collapse_description">Aşağıdakı vərəqi yığcamlaşdırın</string>
+    <string name="m3c_bottom_sheet_dismiss_description">Aşağıdakı vərəqi rədd edin</string>
+    <string name="m3c_bottom_sheet_drag_handle_description">Dəstəyi çəkin</string>
+    <string name="m3c_bottom_sheet_expand_description">Aşağıdakı vərəqi genişləndirin</string>
+    <string name="m3c_bottom_sheet_pane_title">Aşağıdakı vərəq</string>
+    <string name="m3c_dialog">Dialoq</string>
+    <string name="m3c_snackbar_pane_title">Xəbərdarlıq</string>
+    <string name="not_selected">Seçilməyib</string>
+    <string name="range_end">Sıranın sonu</string>
+    <string name="range_start">Sıranın başlanğıcı</string>
+    <string name="selected">Seçilib</string>
+    <string name="state_empty">Boş</string>
+    <string name="state_off">Deaktiv</string>
+    <string name="state_on">Aktiv</string>
+    <string name="switch_role">Dəyişdirin</string>
+    <string name="tab">Tab</string>
+    <string name="template_percent">%1$d faiz.</string>
+    <string name="tooltip_description">alət izahı</string>
+    <string name="tooltip_label">alət izahını göstərin</string>
+</resources>

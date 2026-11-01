@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="autofill">Autocompletar</string>
+    <string name="close_drawer">Cerrar el menú de navegación</string>
+    <string name="close_sheet">Cerrar hoja</string>
+    <string name="default_error_message">Entrada no válida</string>
+    <string name="default_popup_window_title">Ventana emergente</string>
+    <string name="in_progress">En curso</string>
+    <string name="indeterminate">Verificado parcialmente</string>
+    <string name="m3c_bottom_sheet_collapse_description">Contraer la hoja inferior</string>
+    <string name="m3c_bottom_sheet_dismiss_description">Descartar la hoja inferior</string>
+    <string name="m3c_bottom_sheet_drag_handle_description">Controlador de arrastre</string>
+    <string name="m3c_bottom_sheet_expand_description">Expandir la hoja inferior</string>
+    <string name="m3c_bottom_sheet_pane_title">Hoja inferior</string>
+    <string name="m3c_dialog">Diálogo</string>
+    <string name="m3c_snackbar_pane_title">Alerta</string>
+    <string name="not_selected">Sin seleccionar</string>
+    <string name="range_end">Final de intervalo</string>
+    <string name="range_start">Inicio de intervalo</string>
+    <string name="selected">Seleccionado</string>
+    <string name="state_empty">Vacío</string>
+    <string name="state_off">Desactivado</string>
+    <string name="state_on">Activado</string>
+    <string name="switch_role">Cambiar</string>
+    <string name="tab">Pestaña</string>
+    <string name="template_percent">%1$d por ciento.</string>
+    <string name="tooltip_description">cuadro de información</string>
+    <string name="tooltip_label">mostrar cuadro de información</string>
+</resources>

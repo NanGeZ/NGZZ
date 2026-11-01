@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="autofill">Automatisch invullen</string>
+    <string name="close_drawer">Navigatiemenu sluiten</string>
+    <string name="close_sheet">Blad sluiten</string>
+    <string name="default_error_message">Ongeldige invoer</string>
+    <string name="default_popup_window_title">Pop-upvenster</string>
+    <string name="in_progress">Bezig</string>
+    <string name="indeterminate">Gedeeltelijk aangevinkt</string>
+    <string name="m3c_bottom_sheet_collapse_description">Blad onderaan samenvouwen</string>
+    <string name="m3c_bottom_sheet_dismiss_description">Blad onderaan sluiten</string>
+    <string name="m3c_bottom_sheet_drag_handle_description">Handgreep voor slepen</string>
+    <string name="m3c_bottom_sheet_expand_description">Blad onderaan uitvouwen</string>
+    <string name="m3c_bottom_sheet_pane_title">Blad onderaan</string>
+    <string name="m3c_dialog">Dialoogvenster</string>
+    <string name="m3c_snackbar_pane_title">Melding</string>
+    <string name="not_selected">Niet geselecteerd</string>
+    <string name="range_end">Einde bereik</string>
+    <string name="range_start">Start bereik</string>
+    <string name="selected">Geselecteerd</string>
+    <string name="state_empty">Leeg</string>
+    <string name="state_off">Uit</string>
+    <string name="state_on">Aan</string>
+    <string name="switch_role">Overschakelen</string>
+    <string name="tab">Tabblad</string>
+    <string name="template_percent">%1$d procent.</string>
+    <string name="tooltip_description">tooltip</string>
+    <string name="tooltip_label">tooltip tonen</string>
+</resources>
